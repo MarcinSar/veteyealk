@@ -16,6 +16,7 @@ class AirtableClient:
             base_id: ID bazy Airtable
         """
         try:
+            # Używamy bezpośrednio Airtable bez dodatkowych parametrów, które mogą powodować problemy
             self.technicians = Airtable(base_id, 'Technicians', api_key)
             self.devices = Airtable(base_id, 'Devices', api_key)
             self.customers = Airtable(base_id, 'Customers', api_key)
@@ -239,7 +240,11 @@ class AirtableClient:
     def create_calendar_record(self, record_data):
         """Dodaje nowy wpis do tabeli Calendar"""
         try:
-            response = self.airtable.table('Calendar').create(record_data)
+            # Sprawdź czy tabela Calendar istnieje, jeśli nie - utwórz ją
+            if not hasattr(self, 'calendar'):
+                self.calendar = Airtable(self.devices.base_id, 'Calendar', self.devices.api_key)
+            
+            response = self.calendar.insert(record_data)
             return {'status': 'success', 'record': response}
         except Exception as e:
             logger.error(f"Error creating calendar record: {str(e)}")

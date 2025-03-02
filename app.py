@@ -717,6 +717,9 @@ def handle_end(message: str) -> str:
 
 def main():
     """Główna funkcja aplikacji"""
+    # Załaduj zmienne środowiskowe
+    load_environment_variables()
+    
     # Sprawdź, czy wszystkie wymagane zmienne środowiskowe są ustawione
     required_vars = ['AIRTABLE_API_KEY', 'AIRTABLE_BASE_ID', 'OPENAI_API_KEY']
     missing_vars = [var for var in required_vars if var not in os.environ or not os.environ[var]]
@@ -741,77 +744,90 @@ def main():
         return
     
     # Inicjalizacja komponentów aplikacji
-    airtable_client, calendar_client, knowledge_base, ai_helper = initialize_components()
-    
-    # Inicjalizacja stanu sesji
-    initialize_session_state()
-    
-    # Wyświetlenie historii czatu
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-    
-    # Obsługa inputu użytkownika
-    if prompt := st.chat_input("Wpisz swoją odpowiedź..."):
-        # Dodaj wiadomość użytkownika do historii
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
+    try:
+        airtable_client, calendar_client, knowledge_base, ai_helper = initialize_components()
         
-        # Dodaj wiadomość do kontekstu
-        st.session_state.context.add_message({"role": "user", "content": prompt})
+        # Sprawdź, czy komponenty zostały poprawnie zainicjalizowane
+        if airtable_client is None or calendar_client is None or knowledge_base is None or ai_helper is None:
+            st.error("Nie udało się zainicjalizować wszystkich komponentów aplikacji. Sprawdź logi, aby uzyskać więcej informacji.")
+            return
+            
+        # Inicjalizacja stanu sesji
+        initialize_session_state()
         
-        # Generuj odpowiedź asystenta
-        with st.chat_message("assistant"):
-            try:
-                # Pobierz aktualny stan konwersacji
-                current_state = st.session_state.context.current_state
-                logger.info(f"Processing message in state: {current_state.value}")
+        # Wyświetlenie historii czatu
+        for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+        
+        # Obsługa inputu użytkownika
+        if prompt := st.chat_input("Wpisz swoją odpowiedź..."):
+            # Dodaj wiadomość użytkownika do historii
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            with st.chat_message("user"):
+                st.markdown(prompt)
+            
+            # Dodaj wiadomość do kontekstu
+            st.session_state.context.add_message({"role": "user", "content": prompt})
+            
+            # Generuj odpowiedź asystenta
+            with st.chat_message("assistant"):
+                try:
+                    # Pobierz aktualny stan konwersacji
+                    current_state = st.session_state.context.current_state
+                    logger.info(f"Processing message in state: {current_state.value}")
+                    
+                    # Obsługa odpowiednich stanów
+                    if current_state == ConversationState.WELCOME:
+                        response = handle_welcome(prompt)
+                    
+                    elif current_state == ConversationState.DEVICE_VERIFICATION:
+                        response = handle_device_verification(prompt, airtable_client)
+                    
+                    elif current_state == ConversationState.ISSUE_ANALYSIS:
+                        response = handle_issue_analysis(prompt, ai_helper, knowledge_base)
+                    
+                    elif current_state == ConversationState.CHECK_RESOLUTION:
+                        response = handle_check_resolution(prompt)
+                    
+                    elif current_state == ConversationState.ISSUE_REPORTED:
+                        response = handle_issue_reported(prompt)
+                    
+                    elif current_state == ConversationState.SERVICE_SCHEDULING:
+                        response = handle_service_scheduling(prompt, calendar_client)
+                    
+                    elif current_state == ConversationState.COLLECT_CUSTOMER_INFO:
+                        response = handle_collect_customer_info(prompt)
+                    
+                    elif current_state == ConversationState.CONFIRMATION:
+                        response = handle_confirmation(prompt, airtable_client, calendar_client)
+                    
+                    elif current_state == ConversationState.END:
+                        response = handle_end(prompt)
+                    
+                    else:
+                        logger.error(f"Unknown state: {current_state.value}")
+                        response = "Przepraszam, wystąpił błąd. Spróbuj ponownie lub skontaktuj się z serwisem."
+                    
+                    # Dodaj wiadomość asystenta do historii
+                    st.session_state.messages.append({"role": "assistant", "content": response})
+                    st.session_state.context.add_message({"role": "assistant", "content": response})
+                    
+                    # Wyświetl odpowiedź
+                    st.markdown(response)
+                    
+                except Exception as e:
+                    logger.error(f"Error processing message: {str(e)}", exc_info=True)
+                    response = f"Wystąpił błąd: {str(e)}"
                 
-                # Obsługa odpowiednich stanów
-                if current_state == ConversationState.WELCOME:
-                    response = handle_welcome(prompt)
-                
-                elif current_state == ConversationState.DEVICE_VERIFICATION:
-                    response = handle_device_verification(prompt, airtable_client)
-                
-                elif current_state == ConversationState.ISSUE_ANALYSIS:
-                    response = handle_issue_analysis(prompt, ai_helper, knowledge_base)
-                
-                elif current_state == ConversationState.CHECK_RESOLUTION:
-                    response = handle_check_resolution(prompt)
-                
-                elif current_state == ConversationState.ISSUE_REPORTED:
-                    response = handle_issue_reported(prompt)
-                
-                elif current_state == ConversationState.SERVICE_SCHEDULING:
-                    response = handle_service_scheduling(prompt, calendar_client)
-                
-                elif current_state == ConversationState.COLLECT_CUSTOMER_INFO:
-                    response = handle_collect_customer_info(prompt)
-                
-                elif current_state == ConversationState.CONFIRMATION:
-                    response = handle_confirmation(prompt, airtable_client, calendar_client)
-                
-                elif current_state == ConversationState.END:
-                    response = handle_end(prompt)
-                
-                else:
-                    logger.error(f"Unknown state: {current_state.value}")
-                    response = "Przepraszam, wystąpił błąd. Spróbuj ponownie lub skontaktuj się z serwisem."
-                
-                # Dodaj wiadomość asystenta do historii
+                st.markdown(response)
                 st.session_state.messages.append({"role": "assistant", "content": response})
                 st.session_state.context.add_message({"role": "assistant", "content": response})
-                
-                # Wyświetl odpowiedź
-                st.markdown(response)
-                
-            except Exception as e:
-                logger.error(f"Unhandled error in main loop: {str(e)}", exc_info=True)
-                error_msg = f"Wystąpił błąd: {str(e)}"
-                st.session_state.error_message = error_msg
-                st.error(error_msg)
+    
+    except Exception as e:
+        logger.error(f"Error in main function: {str(e)}", exc_info=True)
+        st.error(f"Wystąpił błąd w aplikacji: {str(e)}")
+        return
 
 if __name__ == "__main__":
     main()
