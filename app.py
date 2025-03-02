@@ -8,24 +8,52 @@ from dotenv import load_dotenv
 from dateutil.parser import parse
 import pytz
 from airtable import Airtable
+import toml
+from pathlib import Path
 
-# Konfiguracja zmiennych środowiskowych dla Streamlit Cloud
-if 'STREAMLIT_SHARING_MODE' in os.environ:
-    # Jesteśmy na Streamlit Cloud
-    import toml
-    try:
-        # Próba załadowania sekretów ze Streamlit Cloud
-        secrets = st.secrets
-        os.environ['AIRTABLE_API_KEY'] = secrets['AIRTABLE_API_KEY']
-        os.environ['AIRTABLE_BASE_ID'] = secrets['AIRTABLE_BASE_ID']
-        os.environ['OPENAI_API_KEY'] = secrets['OPENAI_API_KEY']
-        os.environ['DEBUG'] = secrets.get('DEBUG', 'False')
-        print("Załadowano zmienne środowiskowe ze Streamlit Cloud")
-    except Exception as e:
-        print(f"Błąd podczas ładowania sekretów ze Streamlit Cloud: {e}")
-else:
-    # Jesteśmy w środowisku lokalnym
+# Konfiguracja zmiennych środowiskowych
+def load_environment_variables():
+    """Ładuje zmienne środowiskowe z różnych źródeł"""
+    # 1. Próba załadowania z pliku .env (lokalne środowisko)
     load_dotenv()
+    
+    # 2. Próba załadowania z Streamlit secrets
+    try:
+        if hasattr(st, 'secrets') and 'AIRTABLE_API_KEY' in st.secrets:
+            os.environ['AIRTABLE_API_KEY'] = st.secrets['AIRTABLE_API_KEY']
+            os.environ['AIRTABLE_BASE_ID'] = st.secrets['AIRTABLE_BASE_ID']
+            os.environ['OPENAI_API_KEY'] = st.secrets['OPENAI_API_KEY']
+            os.environ['DEBUG'] = st.secrets.get('DEBUG', 'False')
+            print("Załadowano zmienne środowiskowe ze Streamlit secrets")
+            return True
+    except Exception as e:
+        print(f"Błąd podczas ładowania sekretów ze Streamlit: {e}")
+    
+    # 3. Próba załadowania z pliku .streamlit/secrets.toml
+    try:
+        secrets_path = Path(".streamlit/secrets.toml")
+        if secrets_path.exists():
+            secrets = toml.load(secrets_path)
+            os.environ['AIRTABLE_API_KEY'] = secrets['AIRTABLE_API_KEY']
+            os.environ['AIRTABLE_BASE_ID'] = secrets['AIRTABLE_BASE_ID']
+            os.environ['OPENAI_API_KEY'] = secrets['OPENAI_API_KEY']
+            os.environ['DEBUG'] = secrets.get('DEBUG', 'False')
+            print("Załadowano zmienne środowiskowe z pliku .streamlit/secrets.toml")
+            return True
+    except Exception as e:
+        print(f"Błąd podczas ładowania sekretów z pliku: {e}")
+    
+    # Sprawdź, czy zmienne są już ustawione w środowisku
+    required_vars = ['AIRTABLE_API_KEY', 'AIRTABLE_BASE_ID', 'OPENAI_API_KEY']
+    if all(var in os.environ for var in required_vars):
+        print("Zmienne środowiskowe już ustawione w systemie")
+        return True
+    
+    print("UWAGA: Nie udało się załadować wszystkich wymaganych zmiennych środowiskowych!")
+    return False
+
+# Ładowanie zmiennych środowiskowych
+load_environment_variables()
 
 # Konfiguracja logowania
 for handler in logging.root.handlers[:]:
@@ -55,9 +83,6 @@ from utils.calendar import CalendarClient
 from utils.knowledge import KnowledgeBase
 from utils.ai import AIHelper
 from src.models.states import ConversationState, ConversationContext, VALID_STATE_TRANSITIONS
-
-# Ładowanie zmiennych środowiskowych
-load_dotenv()
 
 # Konfiguracja strony Streamlit
 st.set_page_config(
@@ -692,7 +717,30 @@ def handle_end(message: str) -> str:
 
 def main():
     """Główna funkcja aplikacji"""
-    # Inicjalizacja komponentów
+    # Sprawdź, czy wszystkie wymagane zmienne środowiskowe są ustawione
+    required_vars = ['AIRTABLE_API_KEY', 'AIRTABLE_BASE_ID', 'OPENAI_API_KEY']
+    missing_vars = [var for var in required_vars if var not in os.environ or not os.environ[var]]
+    
+    if missing_vars:
+        st.error("⚠️ Brakujące zmienne środowiskowe!")
+        st.write("Aplikacja wymaga następujących zmiennych środowiskowych:")
+        for var in missing_vars:
+            st.write(f"- {var}")
+        
+        st.write("### Jak skonfigurować zmienne środowiskowe:")
+        st.write("""
+        1. W Streamlit Cloud:
+           - Przejdź do ustawień aplikacji
+           - Znajdź sekcję "Secrets" lub "Environment Variables"
+           - Dodaj wymagane zmienne
+        
+        2. Lokalnie:
+           - Utwórz plik `.env` w głównym katalogu projektu
+           - Dodaj wymagane zmienne w formacie `NAZWA_ZMIENNEJ=wartość`
+        """)
+        return
+    
+    # Inicjalizacja komponentów aplikacji
     airtable_client, calendar_client, knowledge_base, ai_helper = initialize_components()
     
     # Inicjalizacja stanu sesji
