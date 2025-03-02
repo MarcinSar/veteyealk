@@ -9,6 +9,24 @@ from dateutil.parser import parse
 import pytz
 from airtable import Airtable
 
+# Konfiguracja zmiennych środowiskowych dla Streamlit Cloud
+if 'STREAMLIT_SHARING_MODE' in os.environ:
+    # Jesteśmy na Streamlit Cloud
+    import toml
+    try:
+        # Próba załadowania sekretów ze Streamlit Cloud
+        secrets = st.secrets
+        os.environ['AIRTABLE_API_KEY'] = secrets['AIRTABLE_API_KEY']
+        os.environ['AIRTABLE_BASE_ID'] = secrets['AIRTABLE_BASE_ID']
+        os.environ['OPENAI_API_KEY'] = secrets['OPENAI_API_KEY']
+        os.environ['DEBUG'] = secrets.get('DEBUG', 'False')
+        print("Załadowano zmienne środowiskowe ze Streamlit Cloud")
+    except Exception as e:
+        print(f"Błąd podczas ładowania sekretów ze Streamlit Cloud: {e}")
+else:
+    # Jesteśmy w środowisku lokalnym
+    load_dotenv()
+
 # Konfiguracja logowania
 for handler in logging.root.handlers[:]:
     logging.root.removeHandler(handler)

@@ -4,6 +4,8 @@ from pathlib import Path
 from typing import List, Dict, Tuple, Optional
 import re
 from difflib import SequenceMatcher
+import os
+import streamlit as st
 
 logger = logging.getLogger(__name__)
 
@@ -15,8 +17,17 @@ class KnowledgeBase:
         Args:
             data_path: Ścieżka do katalogu z danymi
         """
-        self.data_path = Path(data_path)
-        logger.info(f"Initializing Knowledge Base from {data_path}")
+        # Obsługa ścieżek na Streamlit Cloud
+        if 'STREAMLIT_SHARING_MODE' in os.environ:
+            # Na Streamlit Cloud używamy ścieżki względnej od głównego katalogu
+            base_dir = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            self.data_path = base_dir / data_path
+            logger.info(f"Running on Streamlit Cloud, data path: {self.data_path}")
+        else:
+            # Lokalne środowisko
+            self.data_path = Path(data_path)
+            
+        logger.info(f"Initializing Knowledge Base from {self.data_path}")
         
         # Ścieżki do plików z danymi
         self.files_to_load = [
@@ -47,16 +58,21 @@ class KnowledgeBase:
         try:
             if not filepath.exists():
                 logger.warning(f"File not found: {filepath}")
+                logger.warning(f"Current working directory: {os.getcwd()}")
+                logger.warning(f"Absolute path: {filepath.absolute()}")
+                logger.warning(f"Directory contents: {list(filepath.parent.glob('*'))}")
                 return []
-                
+            
+            logger.info(f"Loading file: {filepath}")
             with open(filepath, 'r', encoding='utf-8') as f:
                 data = json.load(f)
+                logger.info(f"Successfully loaded {len(data)} items from {filepath}")
                 return data
         except json.JSONDecodeError as e:
-            logger.error(f"Error parsing {filepath}: {str(e)}")
+            logger.error(f"JSON decode error in {filepath}: {e}")
             return []
         except Exception as e:
-            logger.error(f"Error loading {filepath}: {str(e)}")
+            logger.error(f"Error loading {filepath}: {e}")
             return []
 
     def find_solution(self, model: str, problem_description: str) -> Tuple[List[Dict], str]:
