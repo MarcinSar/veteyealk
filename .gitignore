@@ -1,0 +1,92 @@
+# Zmienne środowiskowe
+.env
+*.env
+.env.*
+!.env.example
+
+# Cache Pythona
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Logi
+*.log
+app.log
+logs/
+
+# Środowiska wirtualne
+venv/
+env/
+ENV/
+.venv/
+virtualenv/
+.python-version
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.spyderproject
+.spyproject
+.ropeproject
+.pyre/
+.pytype/
+
+# Specyficzne dla macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Specyficzne dla Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# Pliki sesji Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Lokalne pliki Streamlit
+.streamlit/secrets.toml
+
+# Foldery i pliki tymczasowe
+temp/
+tmp/
+.tmp/
+*~
+
+# Archiwa
+*.zip
+*.tar.gz
+*.tar
+*.rar
+*.7z
+
+# Upewnij się, że pliki JSON w data/ nie są ignorowane
+!data/*.json

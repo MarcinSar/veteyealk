@@ -1,0 +1,282 @@
+[
+    {
+        "content": "1. Sprawdź, czy akumulator jest odpowiednio naładowany.\n2. Podłącz urządzenie do zasilania i spróbuj ponownie.\n3. W przypadku braku reakcji wykonaj reset, odłączając zasilanie na kilka sekund.\n4. Jeśli problem nie ustępuje, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "power_issues",
+            "category": "troubleshooting",
+            "keywords": ["urządzenie nie włącza się", "akumulator", "zasilanie"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Upewnij się, że złącze sondy jest czyste i prawidłowo wpięte.\n2. Przeprowadź test diagnostyczny sondy dostępny w menu urządzenia.\n3. Jeśli błąd nadal występuje, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "sensor_issues",
+            "category": "troubleshooting",
+            "keywords": ["sonda nie działa prawidłowo", "złącze sondy", "test diagnostyczny"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Dodaj więcej żelu transmisyjnego.\n2. Sprawdź, czy ustawienia urządzenia (np. głębokość) są dostosowane do badanego obszaru.\n3. Jeśli problem nie ustępuje, przeprowadź kalibrację obrazu w menu serwisowym.\n4. Skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "image_quality_issues",
+            "category": "troubleshooting",
+            "keywords": ["rozmazany obraz", "żel transmisyjny", "kalibracja obrazu"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Wyłącz urządzenie i poczekaj kilka sekund przed ponownym uruchomieniem.\n2. Sprawdź, czy pamięć wewnętrzna urządzenia nie jest przepełniona.\n3. Jeśli problem powtarza się, wykonaj aktualizację oprogramowania.\n4. Skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "device_freezing",
+            "category": "troubleshooting",
+            "keywords": ["urządzenie zawiesza się", "pamięć wewnętrzna", "aktualizacja oprogramowania"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Umieść urządzenie w dobrze wentylowanym miejscu, z dala od źródeł ciepła.\n2. Sprawdź, czy otwory wentylacyjne są czyste.\n3. Wyłącz urządzenie i odczekaj, aż ostygnie.\n4. Jeśli problem występuje ponownie, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "overheating",
+            "category": "troubleshooting",
+            "keywords": ["urządzenie przegrzewa się", "wentylacja", "czyszczenie otworów wentylacyjnych"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Wyczyść ekran delikatną ściereczką i upewnij się, że nie jest uszkodzony.\n2. Wykonaj kalibrację ekranu w menu serwisowym.\n3. Skontaktuj się z serwisem, jeśli problem się powtarza.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "touchscreen_issues",
+            "category": "troubleshooting",
+            "keywords": ["ekran dotykowy nie reaguje", "kalibracja ekranu", "uszkodzenie ekranu"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Sprawdź poziom głośności w menu urządzenia.\n2. Przetestuj dźwięk za pomocą funkcji diagnostycznej.\n3. Jeśli problem nie ustępuje, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "doppler_sound_issue",
+            "category": "troubleshooting",
+            "keywords": ["brak dźwięku", "tryb Doppler", "test diagnostyczny"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Upewnij się, że urządzenie jest podłączone do stabilnego źródła zasilania.\n2. Przeprowadź diagnostykę wyświetlacza w menu serwisowym.\n3. Skontaktuj się z serwisem, jeśli problem nie ustępuje.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "display_issue",
+            "category": "troubleshooting",
+            "keywords": ["migoczący wyświetlacz", "diagnostyka wyświetlacza", "zasilanie"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Sprawdź, czy w pamięci urządzenia nie znajdują się zbędne pliki. Usuń je, jeśli to konieczne.\n2. Upewnij się, że oprogramowanie jest aktualne.\n3. Skontaktuj się z serwisem, jeśli problem nie ustępuje.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "performance_issue",
+            "category": "troubleshooting",
+            "keywords": ["urządzenie działa wolniej", "pamięć", "aktualizacja oprogramowania"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Sprawdź ustawienia głośności w menu urządzenia.\n2. Upewnij się, że sonda jest prawidłowo umieszczona na skórze pacjenta.\n3. Przetestuj urządzenie w trybie diagnostycznym, aby sprawdzić funkcję dźwięku.\n4. Skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "doppler_sound_issue",
+            "category": "troubleshooting",
+            "keywords": ["brak dźwięku", "tryb Doppler", "test diagnostyczny"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Dostosuj jasność oraz kontrast obrazu w menu ustawień.\n2. Upewnij się, że żel transmisyjny został równomiernie nałożony.\n3. Jeśli problem nie ustępuje, wykonaj diagnostykę wyświetlacza.\n4. Skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "image_darkness",
+            "category": "troubleshooting",
+            "keywords": ["obraz zbyt ciemny", "jasność", "kontrast", "żel transmisyjny"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Usuń zbędne pliki przechowywane w pamięci urządzenia.\n2. Sformatuj pamięć w menu ustawień (po wcześniejszym zapisaniu ważnych danych).\n3. Jeśli problem się powtarza, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "memory_error",
+            "category": "troubleshooting",
+            "keywords": ["Błąd pamięci", "zbędne pliki", "formatowanie pamięci"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Sprawdź, czy otwory wentylacyjne urządzenia są czyste i niezatkane.\n2. Umieść urządzenie w miejscu z dobrą wentylacją, z dala od źródeł ciepła.\n3. Wyłącz urządzenie i odczekaj, aż ostygnie.\n4. Jeśli problem występuje ponownie, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "overheating",
+            "category": "troubleshooting",
+            "keywords": ["przegrzewanie się urządzenia", "wentylacja", "czyszczenie otworów wentylacyjnych"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Wyłącz urządzenie, odczekaj kilka sekund i włącz je ponownie.\n2. Sprawdź, czy oprogramowanie jest aktualne. Jeśli nie, wykonaj aktualizację.\n3. W przypadku dalszych problemów skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "device_freezing",
+            "category": "troubleshooting",
+            "keywords": ["urządzenie zawiesza się", "aktualizacja oprogramowania", "wznawianie pracy"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Sprawdź ustawienia głośności w menu urządzenia.\n2. Upewnij się, że sonda prawidłowo kontaktuje z badanym obszarem.\n3. Jeśli problem się powtarza, przeprowadź diagnostykę dźwięku w menu serwisowym.\n4. Skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "doppler_sound_issue",
+            "category": "troubleshooting",
+            "keywords": ["brak dźwięku", "tryb Doppler", "test diagnostyczny"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Sprawdź, czy urządzenie jest prawidłowo podłączone do stabilnego źródła zasilania.\n2. Przeprowadź diagnostykę wyświetlacza w menu serwisowym.\n3. Skontaktuj się z serwisem, jeśli problem nie ustępuje.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "display_issue",
+            "category": "troubleshooting",
+            "keywords": ["migoczący wyświetlacz", "zasilanie", "diagnostyka wyświetlacza"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Upewnij się, że akumulator jest odpowiednio naładowany.\n2. Sprawdź stan ładowarki oraz kabel zasilający.\n3. W przypadku dalszych problemów skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "charging_issue",
+            "category": "troubleshooting",
+            "keywords": ["czas ładowania", "ładowarka", "kabel zasilający"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Sprawdź, czy kabel sondy nie jest uszkodzony.\n2. Wykonaj diagnostykę sondy w menu urządzenia.\n3. Jeśli problem nie ustąpi, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "sonde_noise_issue",
+            "category": "troubleshooting",
+            "keywords": ["sonda emituje nietypowe dźwięki", "uszkodzenie kabla", "diagnostyka sondy"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Sprawdź, czy urządzenie jest podłączone do zasilania.\n2. Naładuj akumulator przez co najmniej 30 minut, jeśli jest rozładowany.\n3. Jeśli problem się powtarza, wykonaj reset urządzenia, odłączając je odzasilania na 10 sekund.\n4. Jeśli żadna z powyższych metod nie zadziała, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "power_button_issue",
+            "category": "troubleshooting",
+            "keywords": ["brak reakcji przycisk zasilania", "akumulator rozładowany", "reset urządzenia"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Odłącz sondę i ponownie podłącz, upewniając się, że port jest czysty.\n2. Sprawdź, czy kabel sondy nie jest uszkodzony.\n3. Przeprowadź diagnostykę sondy w menu serwisowym.\n4. Jeśli problem nie ustępuje, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "sensor_error",
+            "category": "troubleshooting",
+            "keywords": ["Błąd sondy", "zanieczyszczony port", "uszkodzenie kabla", "diagnostyka sondy"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Nałóż więcej żelu transmisyjnego, upewnij się, że nie ma pęcherzyków powietrza między sondą a skórą.\n2. Zmień ustawienia głębokości skanowania i czułości w menu urządzenia.\n3. Jeśli problem nadal występuje, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "image_quality_issue",
+            "category": "troubleshooting",
+            "keywords": ["rozmazany obraz", "żel transmisyjny", "głębokość skanowania"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Sprawdź jasność wyświetlacza w ustawieniach.\n2. Upewnij się, że urządzenie jest w pełni włączone.\n3. Wykonaj test diagnostyczny wyświetlacza dostępny w menu serwisowym.\n4. Jeśli problem się nie rozwiąże, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "display_issue",
+            "category": "troubleshooting",
+            "keywords": ["brak obrazu", "jasność wyświetlacza", "diagnostyka wyświetlacza"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Wyłącz urządzenie i odczekaj 10 sekund przed ponownym włączeniem.\n2. Sprawdź, czy oprogramowanie urządzenia jest aktualne.\n3. Wykonaj reset do ustawień fabrycznych.\n4. Jeśli żadna z powyższych metod nie przyniesie efektu, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "device_freezing",
+            "category": "troubleshooting",
+            "keywords": ["urządzenie zawiesza się", "aktualizacja oprogramowania", "reset fabryczny"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Wyłącz urządzenie i odczekaj, aż ostygnie.\n2. Sprawdź, czy otwory wentylacyjne nie są zatkane i oczyść je w razie potrzeby.\n3. Umieść urządzenie w dobrze wentylowanym miejscu, z dala od źródeł ciepła.\n4. Jeśli urządzenie nadal się przegrzewa, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "overheating",
+            "category": "troubleshooting",
+            "keywords": ["przegrzanie urządzenia", "wentylacja", "czyszczenie otworów wentylacyjnych"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Sprawdź ustawienia głośności w menu urządzenia.\n2. Upewnij się, że sonda jest prawidłowo umieszczona na skórze pacjenta.\n3. Przetestuj urządzenie w trybie diagnostycznym, aby sprawdzić funkcję dźwięku.\n4. Skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "doppler_sound_issue",
+            "category": "troubleshooting",
+            "keywords": ["brak dźwięku", "tryb Doppler", "test diagnostyczny"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Upewnij się, że pamięć urządzenia nie jest przepełniona.\n2. Usuń niepotrzebne pliki lub przenieś je na zewnętrzny nośnik.\n3. Jeśli problem nie ustąpi, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "startup_delay",
+            "category": "troubleshooting",
+            "keywords": ["wolne uruchamianie urządzenia", "pamięć urządzenia", "przenoszenie plików"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Wykonaj formatowanie pamięci w menu ustawień.\n2. Sprawdź, czy dane są poprawnie zapisywane w formacie DICOM.\n3. Jeśli problem nadal występuje, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "memory_error",
+            "category": "troubleshooting",
+            "keywords": ["Błąd pamięci", "formatowanie pamięci", "DICOM"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Sprawdź, czy kabel sondy nie jest uszkodzony.\n2. Przeprowadź diagnostykę sondy w menu urządzenia.\n3. Jeśli problem się nie rozwiąże, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "sensor_noise_issue",
+            "category": "troubleshooting",
+            "keywords": ["sonda emituje dziwne dźwięki", "uszkodzenie kabla", "diagnostyka sondy"],
+            "source": "manual-v1.2"
+        }
+    }
+]

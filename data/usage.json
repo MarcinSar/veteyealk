@@ -1,0 +1,394 @@
+[
+    {
+        "content": "1. Włącz urządzenie i wybierz „Tryb B” z menu.\n2. Ustaw sondę na odpowiedniej głębokości, zależnie od badanego narządu.\n3. Nałóż żel transmisyjny na sondę i obszar skóry pacjenta.\n4. Obserwuj obraz na ekranie i dostosuj parametry, jeśli to konieczne.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "mode_switch",
+            "category": "usage",
+            "keywords": ["tryb B", "badanie narządów", "sonda"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. W menu ustawień wybierz „Jasność” obrazu.\n2. Ustaw wartość jasności na 75% i sprawdź, czy obraz jest wyraźniejszy.\n3. Dostosuj kontrast, jeśli to potrzebne.\n4. Sprawdź obraz, aby upewnić się, że jest odpowiednio widoczny.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "brightness_adjustment",
+            "category": "usage",
+            "keywords": ["jasność obrazu", "kontrast", "wyraźność obrazu"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. W menu głównym wybierz „Ustawienia”.\n2. Zjedź do „Reset ustawień fabrycznych”.\n3. Wybierz „Tak” i urządzenie powróci do domyślnych ustawień.\n4. Uruchom urządzenie ponownie.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "factory_reset",
+            "category": "usage",
+            "keywords": ["reset ustawień fabrycznych", "przywrócenie ustawień", "uruchomienie urządzenia"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Włącz urządzenie.\n2. W menu głównym wybierz „Stan akumulatora”.\n3. Sprawdź poziom naładowania.\n4. Jeśli bateria jest bliska rozładowania, podłącz urządzenie do ładowania.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "battery_status",
+            "category": "usage",
+            "keywords": ["stan akumulatora", "poziom naładowania", "ładowanie akumulatora"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. W menu urządzenia wybierz „Diagnostyka”.\n2. Kliknij „Test sondy” i postępuj zgodnie z instrukcjami.\n3. Sprawdź, czy test przebiega pomyślnie.\n4. Jeśli test wykazuje problem, sprawdź połączenie sondy.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "probe_test",
+            "category": "usage",
+            "keywords": ["test sondy", "diagnostyka", "połączenie sondy"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Zaloguj się do systemu aktualizacji oprogramowania.\n2. Wybierz „Sprawdź dostępność aktualizacji”.\n3. Kliknij „Pobierz” i „Zainstaluj” nową wersję.\n4. Urządzenie automatycznie się zrestartuje po zakończeniu procesu.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "software_update",
+            "category": "usage",
+            "keywords": ["aktualizacja oprogramowania", "pobieranie i instalacja", "restart urządzenia"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Upewnij się, że na sondzie jest wystarczająca ilość żelu transmisyjnego.\n2. Sprawdź, czy sonda jest odpowiednio ustawiona na skórze pacjenta.\n3. Dostosuj ustawienia głębokości skanowania i kontrastu.\n4. Jeśli obraz nadal jest rozmazany, wykonaj test wyświetlacza.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "doppler_image_blurry",
+            "category": "troubleshooting",
+            "keywords": ["rozmazany obraz", "tryb Doppler", "żel transmisyjny", "sonda"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Upewnij się, że urządzenie jest podłączone do źródła zasilania.\n2. Jeśli akumulator jest rozładowany, podłącz go do ładowarki.\n3. Spróbuj ponownie włączyć urządzenie.\n4. Jeśli nie reaguje, zresetuj urządzenie, odłączając je od zasilania na 10 sekund.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "device_not_turning_on",
+            "category": "troubleshooting",
+            "keywords": ["urządzenie nie włącza się", "zasilanie", "reset urządzenia"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. W menu serwisowym wybierz „Kalibracja obrazu”.\n2. Zastosuj odpowiednie ustawienia dla różnych typów badania (np. serce, jamę brzuszną).\n3. Zatwierdź ustawienia i sprawdź poprawność obrazu.\n4. Jeśli obraz nie jest poprawny, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro-Key 75",
+            "problem_type": "image_calibration",
+            "category": "usage",
+            "keywords": ["kalibracja obrazu", "poprawność obrazu", "serwis"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Naciśnij przycisk zasilania przez 3 sekundy.\n2. Po załadowaniu systemu, przejdź do menu głównego.\n3. Wybierz odpowiednią funkcję badania, np. jamę brzuszną lub serce.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "turn_on_device",
+            "category": "usage",
+            "keywords": ["włączanie urządzenia", "menu główne", "funkcja badania"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Wybierz tryb B z menu głównego.\n2. Ustaw głębokość skanowania na odpowiednią wartość (np. 4 cm dla badań brzusznych).\n3. Zatwierdź ustawienia i sprawdź obraz.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "scan_depth_adjustment",
+            "category": "usage",
+            "keywords": ["głębokość skanowania", "tryb B", "badania brzuszne"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Przejdź do menu „Diagnostyka”.\n2. Wybierz „Kalibracja sondy”.\n3. Postępuj zgodnie z instrukcjami na ekranie.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "probe_calibration",
+            "category": "usage",
+            "keywords": ["kalibracja sondy", "menu diagnostyki", "sonda"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Upewnij się, że ekran jest czysty i nie ma na nim zabrudzeń.\n2. Wykonaj kalibrację ekranu w menu ustawień.\n3. Jeśli problem nie ustępuje, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "touchscreen_issue",
+            "category": "usage",
+            "keywords": ["ekran dotykowy", "czyszczenie", "kalibracja ekranu"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Upewnij się, że na sondzie jest wystarczająca ilość żelu transmisyjnego.\n2. Dostosuj jasność oraz kontrast obrazu w menu ustawień.\n3. Ustaw odpowiednią głębokość, aby uzyskać wyraźniejszy obraz.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "doppler_image_quality",
+            "category": "usage",
+            "keywords": ["jakość obrazu", "tryb Doppler", "żel transmisyjny"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Naciśnij przycisk zasilania.\n2. Przejdź do menu ustawień i wybierz „Stan akumulatora”.\n3. Jeśli akumulator jest niski, podłącz urządzenie do ładowania.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "battery_status",
+            "category": "usage",
+            "keywords": ["stan akumulatora", "ładowanie akumulatora", "poziom naładowania"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Przytrzymaj przycisk zasilania przez 10 sekund, aby wyłączyć urządzenie.\n2. Następnie ponownie włącz urządzenie.\n3. Sprawdź, czy problem został rozwiązany.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "device_reset",
+            "category": "usage",
+            "keywords": ["reset urządzenia", "włączanie urządzenia", "przytrzymaj przycisk zasilania"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. W menu wybierz „Diagnostyka”.\n2. Kliknij „Test sondy” i postępuj zgodnie z instrukcjami.\n3. Jeśli wynik testu jest negatywny, sprawdź połączenie sondy z urządzeniem.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "probe_test",
+            "category": "usage",
+            "keywords": ["test sondy", "diagnostyka sondy", "połączenie sondy"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Upewnij się, że sonda jest prawidłowo podłączona.\n2. Wyczyść złącza sondy, aby usunąć zabrudzenia.\n3. Sprawdź, czy porty są czyste i nieuszkodzone.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "probe_detection_issue",
+            "category": "usage",
+            "keywords": ["brak wykrycia sondy", "czyszczenie sondy", "uszkodzenie portów"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. W menu ustawień wybierz „Kalibracja ekranu”.\n2. Postępuj zgodnie z instrukcjami na ekranie.\n3. Po zakończeniu, ekran dotykowy powinien działać precyzyjnie.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "display_calibration",
+            "category": "usage",
+            "keywords": ["kalibracja ekranu", "dotykowy ekran", "instrukcje ekranowe"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. W menu ustawień wybierz „Jasność”.\n2. Ustaw odpowiednią wartość jasności, aby obraz był wyraźny.\n3. Dostosuj kontrast, aby poprawić widoczność detali.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "brightness_adjustment",
+            "category": "usage",
+            "keywords": ["jasność obrazu", "kontrast", "wyraźny obraz"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Upewnij się, że urządzenie jest w odpowiedniej temperaturze otoczenia.\n2. Sprawdź, czy wentylacja urządzenia nie jest zablokowana.\n3. Wyłącz urządzenie i pozwól mu ostygnąć.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "overheating",
+            "category": "usage",
+            "keywords": ["przegrzewanie urządzenia", "wentylacja", "chłodzenie urządzenia"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. W menu serwisowym wybierz „Diagnostyka systemu”.\n2. Urządzenie przeprowadzi test wszystkich podzespołów.\n3. Zapisz raport diagnostyczny i postępuj zgodnie z instrukcjami.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "system_diagnostics",
+            "category": "usage",
+            "keywords": ["diagnostyka systemowa", "test systemu", "raport diagnostyczny"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Przytrzymaj przycisk zasilania przez 3 sekundy.\n2. Urządzenie się wyłączy.\n3. Jeśli urządzenie nie wyłączy się, sprawdź, czy jest odpowiednio podłączone do zasilania.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "turn_off_device",
+            "category": "usage",
+            "keywords": ["wyłączanie urządzenia", "zasilanie urządzenia", "przycisk zasilania"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. W menu ustawień wybierz „Zarządzanie pamięcią”.\n2. Usuń zbędne pliki, aby zwolnić miejsce.\n3. Sformatuj pamięć, jeśli problem nie ustępuje.",
+        "metadata": {
+            "device_model": "Vet Pro 70",
+            "problem_type": "memory_error",
+            "category": "usage",
+            "keywords": ["błędy pamięci", "usuwanie plików", "formatowanie pamięci"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Włącz urządzenie i wybierz „Tryb B” z menu.\n2. Ustaw sondę na odpowiedniej głębokości, np. 5 cm dla jamy brzusznej.\n3. Nałóż cienką warstwę żelu transmisyjnego na sondę oraz badany obszar.\n4. Sprawdź obraz na ekranie i dostosuj ustawienia, jeśli to konieczne.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "mode_switch",
+            "category": "usage",
+            "keywords": ["tryb B", "badanie narządów", "sonda", "głębokosć skanowania"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Wybierz „Tryb M” w menu głównym.\n2. Ustaw sondę na odpowiedniej głębokości (ok. 3-4 cm dla serca).\n3. Ustaw jasność obrazu na średnią wartość, aby uzyskać lepszą widoczność.\n4. Użyj funkcji „Freeze Frame”, aby zatrzymać obraz i szczegółowo przeanalizować serce.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "m_mode_image_quality",
+            "category": "usage",
+            "keywords": ["tryb M", "badanie serca", "jasność obrazu", "freeze frame"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Przejdź do ustawień i wybierz „Aktualizacje oprogramowania”.\n2. Kliknij „Sprawdź dostępność aktualizacji”.\n3. Jeśli aktualizacja jest dostępna, kliknij „Pobierz i zainstaluj”.\n4. Urządzenie automatycznie zrestartuje się po zakończeniu instalacji.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "software_update",
+            "category": "usage",
+            "keywords": ["aktualizacja oprogramowania", "pobieranie i instalacja", "restart urządzenia"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Upewnij się, że urządzenie jest podłączone do zasilania.\n2. Jeśli akumulator jest rozładowany, podłącz go do ładowarki na kilka minut.\n3. Spróbuj ponownie nacisnąć przycisk zasilania.\n4. Jeśli problem nie ustępuje, zresetuj urządzenie, przytrzymując przycisk przez 10 sekund.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "power_button_issue",
+            "category": "usage",
+            "keywords": ["brak reakcji przycisk zasilania", "rozładowany akumulator", "reset urządzenia"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Przejdź do ustawień obrazu.\n2. Zmień wartość „Jasność” na odpowiednią do warunków oświetleniowych.\n3. Ustaw kontrast, aby poprawić widoczność szczegółów na ekranie.\n4. Sprawdź obraz, aby upewnić się, że jest dobrze widoczny.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "brightness_adjustment",
+            "category": "usage",
+            "keywords": ["jasność obrazu", "kontrast", "widoczność szczegółów"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. W menu serwisowym wybierz „Diagnostyka”.\n2. Urządzenie przeprowadzi automatyczny test systemu.\n3. Jeśli diagnostyka wykryje problemy, na ekranie pojawią się powiadomienia.\n4. Zapisz raport diagnostyczny i postępuj zgodnie z instrukcjami.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "system_diagnostics",
+            "category": "usage",
+            "keywords": ["diagnostyka systemowa", "test systemu", "raport diagnostyczny"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Upewnij się, że urządzenie jest prawidłowo podłączone do źródła zasilania.\n2. Wybierz „Kalibrację wyświetlacza” w menu diagnostycznym.\n3. Przeprowadź kalibrację, dotykając wskazanych punktów na ekranie.\n4. Sprawdź, czy obraz poprawił się po kalibracji.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "display_calibration",
+            "category": "usage",
+            "keywords": ["kalibracja wyświetlacza", "zniekształcony obraz", "dotykanie ekranu"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. W menu głównym wybierz „Kolorowy Doppler”.\n2. Nałóż żel na sondę i odpowiedni obszar skóry pacjenta.\n3. Umieść sondę na badanym naczyniu krwionośnym.\n4. Obserwuj przepływ krwi na ekranie w czasie rzeczywistym, zwracając uwagę na kolorowe oznaczenia.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "doppler_mode",
+            "category": "usage",
+            "keywords": ["kolorowy Doppler", "przepływ krwi", "sonda", "naczynie krwionośne"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Przejdź do menu ustawień.\n2. Wybierz „Reset ustawień fabrycznych”.\n3. Potwierdź decyzję, klikając „Tak”.\n4. Urządzenie zrestartuje się i przywróci ustawienia domyślne.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "factory_reset",
+            "category": "usage",
+            "keywords": ["reset ustawień fabrycznych", "restart urządzenia", "domyślne ustawienia"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Przenieś urządzenie do miejsca o lepszej wentylacji.\n2. Sprawdź, czy otwory wentylacyjne nie są zablokowane.\n3. Wyłącz urządzenie i pozwól mu ostygnąć przez kilka minut.\n4. Jeśli problem powtarza się, sprawdź, czy urządzenie nie jest używane w zbyt wysokiej temperaturze.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "overheating",
+            "category": "usage",
+            "keywords": ["przegrzewanie się urządzenia", "wentylacja", "chłodzenie urządzenia"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Przejdź do menu „Diagnostyka”.\n2. Wybierz „Test sondy” i postępuj zgodnie z instrukcjami.\n3. Sprawdź, czy urządzenie wykrywa sondę i wyświetla odpowiedni obraz.\n4. Jeśli test jest nieudany, sprawdź porty i połączenie sondy.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "probe_test",
+            "category": "usage",
+            "keywords": ["test sondy", "sonda", "porty sondy", "połączenie sondy"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. W menu diagnostycznym wybierz „Kalibracja ekranu”.\n2. Dotknij ekranu w wskazanych punktach na ekranie.\n3. Zatwierdź kalibrację i sprawdź, czy ekran reaguje prawidłowo.\n4. Jeśli problem nie ustępuje, sprawdź, czy ekran nie jest uszkodzony.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "touchscreen_calibration",
+            "category": "usage",
+            "keywords": ["kalibracja ekranu dotykowego", "dotykowy ekran", "uszkodzenie ekranu"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Przytrzymaj przycisk zasilania przez 3 sekundy.\n2. Urządzenie powinno się wyłączyć.\n3. Jeśli urządzenie nie reaguje, sprawdź, czy jest prawidłowo podłączone do zasilania.\n4. Jeśli problem się powtarza, wykonaj reset.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "turn_off_device",
+            "category": "usage",
+            "keywords": ["wyłączanie urządzenia", "przycisk zasilania", "zasilanie"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Przejdź do ustawień i wybierz „Zarządzanie pamięcią”.\n2. Wybierz „Usuń pliki” i sprawdź, które pliki można usunąć.\n3. Zatwierdź usunięcie plików, aby zwolnić miejsce.\n4. Sprawdź, czy urządzenie działa szybciej po usunięciu zbędnych plików.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "memory_management",
+            "category": "usage",
+            "keywords": ["zarządzanie pamięcią", "usuwanie plików", "zwolnienie miejsca"],
+            "source": "manual-v1.2"
+        }
+    },
+    {
+        "content": "1. Upewnij się, że kabel sondy nie jest uszkodzony.\n2. Sprawdź, czy sonda jest prawidłowo podłączona do portu.\n3. Wykonaj test diagnostyczny sondy w menu urządzenia.\n4. Jeśli problem nie ustępuje, skontaktuj się z serwisem.",
+        "metadata": {
+            "device_model": "Vet Portable 15",
+            "problem_type": "probe_noise_issue",
+            "category": "usage",
+            "keywords": ["sonda", "dziwne dźwięki", "uszkodzenie kabla", "diagnostyka sondy"],
+            "source": "manual-v1.2"
+        }
+    }
+]
+
+

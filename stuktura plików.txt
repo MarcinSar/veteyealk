@@ -1,0 +1,14 @@
+veteye-service-assistant/
+├── app.py
+├── requirements.txt
+├── .streamlit/
+│   └── config.toml
+├── src/
+│   └── models/
+│       └── states.py
+└── utils/
+    ├── __init__.py
+    ├── airtable.py
+    ├── ai.py
+    ├── calendar.py
+    └── knowledge.py

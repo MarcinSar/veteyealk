@@ -1,0 +1,9 @@
+[runner]
+fastReruns = false 
+
+[logger]
+level = "debug"
+messageFormat = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+[client]
+showErrorDetails = "full" 
