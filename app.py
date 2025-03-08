@@ -819,10 +819,16 @@ def main():
                 except Exception as e:
                     logger.error(f"Error processing message: {str(e)}", exc_info=True)
                     response = f"Wystąpił błąd: {str(e)}"
+                    
+                    # Dodaj informację o błędzie do historii
+                    st.session_state.messages.append({"role": "assistant", "content": response})
+                    st.session_state.context.add_message({"role": "assistant", "content": response})
+                    
+                    # Wyświetl informację o błędzie
+                    st.markdown(response)
                 
-                st.markdown(response)
-                st.session_state.messages.append({"role": "assistant", "content": response})
-                st.session_state.context.add_message({"role": "assistant", "content": response})
+                # Usuwam tę linię, która powoduje podwójne wyświetlanie odpowiedzi
+                # st.markdown(response)
     
     except Exception as e:
         logger.error(f"Error in main function: {str(e)}", exc_info=True)
