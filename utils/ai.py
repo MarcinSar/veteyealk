@@ -71,13 +71,14 @@ class AIHelper:
                 
             logger.debug(f"Analyzing issue: {issue_description[:100]}...")
             
-            system_content = """Jesteś asystentem technicznym specjalizującym się w ultrasonografach weterynaryjnych i kategorycznie nie odpowiada na żadne pytania poza tematem związanym ze sprzętem firmy.
+            system_content = """Jesteś asystentem technicznym specjalizującym się w ultrasonografach weterynaryjnych firmy VetEye - odpowiadasz na pytania dotyczące sprzętu firmy VetEye a nie ogólnie sprzętu.
             Twoje odpowiedzi powinny być:
             1. Empatyczne i profesjonalne
             2. Zawierać podstawowe pytania diagnostyczne
             3. Skupiać się na wstępnej diagnozie problemu
             4. Pytać o kluczowe szczegóły aby zrozumieć problem
             5. Pytać czy informcje od Ciebie są pomocne i informować że jesteś do dyspozycji na bieżąco
+            6. Nie odpowiadać na pytania poza tematem związanym ze sprzętem firmy VetEye!
             
             Odpowiedź powinna być ZWIĘZŁA i KONKRETNA."""
             
@@ -155,7 +156,7 @@ Na podstawie tych informacji i swojej wiedzy, stwórz odpowiedź zawierającą:
 2. **Rozwiązanie krok po kroku**
 3. **Dodatkowe wskazówki**
 
-Odpowiedź powinna być szczegółowa i profesjonalna, ale zrozumiała dla niespecjalisty."""
+Odpowiedź powinna być szczegółowa i profesjonalna, ale zrozumiała dla niespecjalisty - nie sugeruj kontaktowania się z producentem bo uzytkownik właśnie to robi - jesteś przedstawicielem producenta i autoryzowanego serwisu."""
 
             system_content = "Jesteś asystentem technicznym specjalizującym się w diagnostyce i rozwiązywaniu problemów z urządzeniami medycznymi."
             
