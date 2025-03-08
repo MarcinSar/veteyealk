@@ -239,6 +239,16 @@ Czy wyrażasz zgodę na przetwarzanie danych osobowych zgodnie z RODO w przypadk
 
 def handle_device_verification(message: str, airtable_client: AirtableClient) -> str:
     """Obsługuje weryfikację urządzenia"""
+    # Sprawdź, czy wiadomość wygląda jak numer seryjny
+    if not message.lower().startswith("sn:") and not message.lower().startswith("sn "):
+        # Jeśli nie wygląda jak numer seryjny, poproś o podanie numeru seryjnego
+        return """### Potrzebuję numeru seryjnego Twojego urządzenia
+
+Aby kontynuować diagnostykę, proszę podaj numer seryjny w formacie: SN: XXXX
+(gdzie XXXX to właściwy numer seryjny urządzenia)
+
+Numer seryjny znajduje się na naklejce na spodzie lub z tyłu urządzenia."""
+    
     result = airtable_client.get_device_info(message)
     
     if result["status"] == "success":

@@ -230,6 +230,27 @@ Czy potrzebujesz dodatkowej pomocy lub masz pytania?"""
             Dict: Zawiera 'is_on_topic' (bool) i 'response' (str) jeśli zapytanie jest off-topic
         """
         try:
+            # Prosta heurystyka - sprawdź, czy zapytanie zawiera słowa kluczowe związane z urządzeniami
+            device_keywords = [
+                "urządzenie", "urządzenia", "sprzęt", "aparat", "zdjęcia", "zdjęcie", "obraz", "obrazy", 
+                "jakość", "wyraźne", "niewyraźne", "rozmyte", "ostrość", "kontrast", "jasność", 
+                "włącza", "wyłącza", "restart", "zawiesza", "problem", "usterka", "awaria", "naprawa",
+                "serwis", "gwarancja", "ekran", "wyświetlacz", "bateria", "zasilanie", "kabel", "głowica",
+                "sonda", "przycisk", "menu", "ustawienia", "kalibracja", "diagnostyka", "błąd", "error",
+                "vet", "eye", "vet-eye", "weterynaryjne", "weterynaryjny", "medyczne", "medyczny"
+            ]
+            
+            # Sprawdź, czy zapytanie zawiera jakiekolwiek słowo kluczowe
+            query_lower = query.lower()
+            for keyword in device_keywords:
+                if keyword.lower() in query_lower:
+                    return {"is_on_topic": True}
+            
+            # Jeśli zapytanie jest bardzo krótkie (np. "SN"), uznaj je za on-topic
+            if len(query.strip()) <= 5:
+                return {"is_on_topic": True}
+                
+            # Jeśli nie znaleziono słów kluczowych, użyj AI do oceny
             if self.client is None:
                 # Fallback - zakładamy, że pytanie jest na temat
                 return {"is_on_topic": True}
@@ -239,7 +260,10 @@ Czy potrzebujesz dodatkowej pomocy lub masz pytania?"""
             Zapytanie: "{query}"
             
             Odpowiedz tylko "TAK" jeśli zapytanie jest związane z tematyką urządzeń medycznych, ich serwisem, problemami technicznymi lub użytkowaniem.
-            Odpowiedz "NIE" jeśli zapytanie dotyczy polityki, plotek, tematów osobistych, opinii na kontrowersyjne tematy lub innych kwestii niezwiązanych z urządzeniami medycznymi i ich serwisem."""
+            Odpowiedz "NIE" jeśli zapytanie dotyczy polityki, plotek, tematów osobistych, opinii na kontrowersyjne tematy lub innych kwestii niezwiązanych z urządzeniami medycznymi i ich serwisem.
+            
+            WAŻNE: Jeśli zapytanie dotyczy problemów z urządzeniem, takich jak "nie działa", "zepsuty", "problem z", "nie robi zdjęć", "niewyraźne zdjęcia" itp., odpowiedz "TAK".
+            Jeśli nie masz pewności, odpowiedz "TAK"."""
 
             system_content = "Jesteś precyzyjnym asystentem, który ocenia, czy pytania są związane z tematyką urządzeń medycznych i ich serwisu. Odpowiadaj tylko TAK lub NIE."
             
@@ -269,7 +293,12 @@ Czy potrzebujesz dodatkowej pomocy lub masz pytania?"""
                 # Fallback - zakładamy, że pytanie jest na temat
                 return {"is_on_topic": True}
             
+            # Tylko jeśli model jest bardzo pewny, że to NIE jest na temat, zwróć False
             if result == "NIE":
+                # Dodatkowe sprawdzenie - jeśli zapytanie zawiera słowo "urządzenie" lub "problem", uznaj je za on-topic
+                if "urządzenie" in query_lower or "problem" in query_lower or "nie" in query_lower:
+                    return {"is_on_topic": True}
+                    
                 off_topic_response = """Przepraszam, ale jako asystent serwisowy Vet-Eye mogę odpowiadać wyłącznie na pytania związane z urządzeniami medycznymi naszej firmy, ich obsługą, konfiguracją i problemami technicznymi.
 
 Czy mógłbyś zadać pytanie dotyczące Twojego urządzenia Vet-Eye lub opisać problem techniczny, z którym się spotkałeś? Jestem tu, aby pomóc Ci w rozwiązaniu problemów z urządzeniem."""
