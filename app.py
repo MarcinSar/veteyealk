@@ -211,7 +211,7 @@ def handle_welcome(message: str) -> str:
 
 Aby pomóc Ci w diagnostyce, potrzebuję numeru seryjnego Twojego urządzenia. Pomoże mi to lepiej zrozumieć problem i pomóc Ci w jego rozwiązaniu i jednocześnie sprawdzić czy urządzenie jest objęte gwarancją. 
 
-**Proszę podaj numer seryjny w formacie: SN**"""
+**Proszę podaj numer seryjny w formacie: SN:XXXX**"""
         else:
             return "Przepraszam, wystąpił błąd podczas przetwarzania zgody. Spróbuj ponownie."
     elif message.lower() in ['nie', 'n', 'no']:
