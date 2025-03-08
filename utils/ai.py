@@ -1,18 +1,9 @@
 import logging
 from typing import Dict, List, Optional, Any
 import json
-
-# Próba importu różnych wersji OpenAI API
-try:
-    # Próba importu nowej wersji (1.0.0+)
-    from openai import OpenAI
-    USING_NEW_OPENAI = True
-    logging.getLogger(__name__).info("Using OpenAI new API (1.0.0+)")
-except (ImportError, AttributeError):
-    # Fallback do starszej wersji
-    import openai
-    USING_NEW_OPENAI = False
-    logging.getLogger(__name__).info("Using OpenAI legacy API (<1.0.0)")
+import os
+import importlib
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -20,21 +11,50 @@ class AIHelper:
     def __init__(self, api_key):
         """Inicjalizacja pomocnika AI"""
         self.api_key = api_key
-        if USING_NEW_OPENAI:
-            # Nowa wersja API (1.0.0+)
-            self.client = OpenAI(api_key=api_key)
-            self.default_model = "gpt-4o"
-            logger.info("OpenAI client initialized with modern SDK")
-        else:
-            # Starsza wersja API (<1.0.0)
-            openai.api_key = api_key
-            self.client = openai
-            # Użyj kompatybilnego modelu dla starszej wersji API
-            self.default_model = "gpt-4"
-            logger.info("OpenAI client initialized with legacy SDK")
+        self.default_model = "gpt-4o"  # Preferowany model
         
-        logger.info("AIHelper initialized")
-        
+        # Próba inicjalizacji klienta w bezpieczny sposób, bez używania argumentu 'proxies'
+        try:
+            # Metoda 1: Użycie zmiennej środowiskowej (najbezpieczniejsza metoda)
+            logger.info("Trying initialization method 1: Environment variable")
+            os.environ["OPENAI_API_KEY"] = api_key
+            
+            # Sprawdź, czy mamy dostęp do nowego API OpenAI
+            if self._is_new_openai_available():
+                from openai import OpenAI
+                self.client = OpenAI() # Bez jawnego przekazywania api_key - użyje zmiennej środowiskowej
+                self.client_type = "new"
+                logger.info("Successfully initialized OpenAI client with new API")
+            else:
+                # Starsza wersja OpenAI
+                import openai
+                openai.api_key = api_key
+                self.client = openai
+                self.client_type = "legacy"
+                # Dostosowanie modelu do starszej wersji API
+                self.default_model = "gpt-4"
+                logger.info("Successfully initialized OpenAI client with legacy API")
+        except Exception as e:
+            logger.error(f"Error initializing OpenAI client: {str(e)}")
+            # Fallback - utworzenie pustego klienta i obsługa błędów w metodach
+            self.client = None
+            self.client_type = "none"
+            logger.warning("Created empty client, API calls will return fallback responses")
+    
+    def _is_new_openai_available(self):
+        """Sprawdza, czy nowa wersja API OpenAI jest dostępna"""
+        try:
+            # Próba importu klasy OpenAI
+            spec = importlib.util.find_spec('openai')
+            if spec is None:
+                return False
+                
+            # Spróbuj zaimportować konkretną klasę
+            from openai import OpenAI
+            return True
+        except (ImportError, AttributeError):
+            return False
+    
     def analyze_issue(self, issue_description: str) -> str:
         """
         Analizuje wstępny opis problemu i zadaje odpowiednie pytania
@@ -46,6 +66,9 @@ class AIHelper:
             str: Wygenerowana odpowiedź od AI
         """
         try:
+            if self.client is None:
+                raise Exception("No OpenAI client available")
+                
             logger.debug(f"Analyzing issue: {issue_description[:100]}...")
             
             system_content = """Jesteś asystentem technicznym specjalizującym się w ultrasonografach weterynaryjnych.
@@ -59,7 +82,7 @@ class AIHelper:
             
             user_content = f"Problem z urządzeniem: {issue_description}"
             
-            if USING_NEW_OPENAI:
+            if self.client_type == "new":
                 # Nowa wersja API (1.0.0+)
                 response = self.client.chat.completions.create(
                     model=self.default_model,
@@ -71,7 +94,7 @@ class AIHelper:
                     max_tokens=500
                 )
                 result = response.choices[0].message.content
-            else:
+            elif self.client_type == "legacy":
                 # Starsza wersja API (<1.0.0)
                 response = self.client.ChatCompletion.create(
                     model=self.default_model,
@@ -83,6 +106,8 @@ class AIHelper:
                     max_tokens=500
                 )
                 result = response.choices[0]['message']['content']
+            else:
+                raise Exception("Invalid client type")
             
             logger.debug(f"AI response generated: {result[:100]}...")
             return result
@@ -110,6 +135,9 @@ Proszę o podanie tych szczegółów, żebym mógł lepiej zrozumieć sytuację.
             str: AI generated response with analysis and solution
         """
         try:
+            if self.client is None:
+                raise Exception("No OpenAI client available")
+                
             # Przygotowanie kontekstu z rozwiązań
             solutions_context = self._format_solutions(solutions)
             
@@ -130,7 +158,7 @@ Odpowiedź powinna być szczegółowa i profesjonalna, ale zrozumiała dla niesp
 
             system_content = "Jesteś asystentem technicznym specjalizującym się w diagnostyce i rozwiązywaniu problemów z urządzeniami medycznymi."
             
-            if USING_NEW_OPENAI:
+            if self.client_type == "new":
                 # Nowa wersja API (1.0.0+)
                 response = self.client.chat.completions.create(
                     model=self.default_model,
@@ -142,7 +170,7 @@ Odpowiedź powinna być szczegółowa i profesjonalna, ale zrozumiała dla niesp
                     max_tokens=800
                 )
                 result = response.choices[0].message.content
-            else:
+            elif self.client_type == "legacy":
                 # Starsza wersja API (<1.0.0)
                 response = self.client.ChatCompletion.create(
                     model=self.default_model,
@@ -154,6 +182,8 @@ Odpowiedź powinna być szczegółowa i profesjonalna, ale zrozumiała dla niesp
                     max_tokens=800
                 )
                 result = response.choices[0]['message']['content']
+            else:
+                raise Exception("Invalid client type")
             
             logger.debug(f"AI solution analysis generated: {result[:100]}...")
             return result
