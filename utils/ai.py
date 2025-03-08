@@ -8,7 +8,25 @@ logger = logging.getLogger(__name__)
 class AIHelper:
     def __init__(self, api_key):
         """Inicjalizacja pomocnika AI"""
-        self.client = OpenAI(api_key=api_key)
+        try:
+            # Próba inicjalizacji z nowszą wersją OpenAI bez dodatkowych parametrów
+            self.client = OpenAI(api_key=api_key)
+            logger.info("OpenAI client initialized with modern SDK")
+        except Exception as e:
+            logger.warning(f"Error initializing modern OpenAI client: {str(e)}")
+            try:
+                # Próba inicjalizacji ze starszą wersją OpenAI
+                import openai as openai_legacy
+                openai_legacy.api_key = api_key
+                self.client = openai_legacy
+                self.is_legacy = True
+                logger.info("OpenAI client initialized with legacy SDK")
+            except Exception as e2:
+                logger.error(f"Failed to initialize any OpenAI client: {str(e2)}")
+                raise Exception(f"Could not initialize OpenAI: {str(e)}, then {str(e2)}")
+        
+        # Flaga do rozróżnienia nowego i starego API
+        self.is_legacy = False
         self.default_model = "gpt-4o-mini"
         logger.info("AIHelper initialized")
         
@@ -25,22 +43,42 @@ class AIHelper:
         try:
             logger.debug(f"Analyzing issue: {issue_description[:100]}...")
             
-            response = self.client.chat.completions.create(
-                model=self.default_model,
-                messages=[
-                    {"role": "system", "content": """Jesteś asystentem technicznym specjalizującym się w ultrasonografach weterynaryjnych.
-                    Twoje odpowiedzi powinny być:
-                    1. Empatyczne i profesjonalne
-                    2. Zawierać podstawowe pytania diagnostyczne
-                    3. Skupiać się na wstępnej diagnozie problemu
-                    4. Pytać o kluczowe szczegóły aby zrozumieć problem
-                    
-                    Odpowiedź powinna być ZWIĘZŁA i KONKRETNA."""},
-                    {"role": "user", "content": f"Problem z urządzeniem: {issue_description}"}
-                ],
-                temperature=0.5,
-                max_tokens=500
-            )
+            if not self.is_legacy:
+                # Nowe API OpenAI
+                response = self.client.chat.completions.create(
+                    model=self.default_model,
+                    messages=[
+                        {"role": "system", "content": """Jesteś asystentem technicznym specjalizującym się w ultrasonografach weterynaryjnych.
+                        Twoje odpowiedzi powinny być:
+                        1. Empatyczne i profesjonalne
+                        2. Zawierać podstawowe pytania diagnostyczne
+                        3. Skupiać się na wstępnej diagnozie problemu
+                        4. Pytać o kluczowe szczegóły aby zrozumieć problem
+                        
+                        Odpowiedź powinna być ZWIĘZŁA i KONKRETNA."""},
+                        {"role": "user", "content": f"Problem z urządzeniem: {issue_description}"}
+                    ],
+                    temperature=0.5,
+                    max_tokens=500
+                )
+            else:
+                # Starsze API OpenAI
+                response = self.client.chat.completions.create(
+                    model=self.default_model,
+                    messages=[
+                        {"role": "system", "content": """Jesteś asystentem technicznym specjalizującym się w ultrasonografach weterynaryjnych.
+                        Twoje odpowiedzi powinny być:
+                        1. Empatyczne i profesjonalne
+                        2. Zawierać podstawowe pytania diagnostyczne
+                        3. Skupiać się na wstępnej diagnozie problemu
+                        4. Pytać o kluczowe szczegóły aby zrozumieć problem
+                        
+                        Odpowiedź powinna być ZWIĘZŁA i KONKRETNA."""},
+                        {"role": "user", "content": f"Problem z urządzeniem: {issue_description}"}
+                    ],
+                    temperature=0.5,
+                    max_tokens=500
+                )
             
             result = response.choices[0].message.content
             logger.debug(f"AI response generated: {result[:100]}...")
@@ -80,67 +118,60 @@ Zgłoszony problem: {issue_description}
 Informacje z bazy wiedzy:
 {solutions_context}
 
-Na podstawie powyższych informacji:
-1. Zidentyfikuj prawdopodobną przyczynę problemu
-2. Przedstaw konkretne rozwiązanie krok po kroku
-3. Podaj dodatkowe wskazówki, które mogą być istotne
-4. Zachowaj profesjonalny, ale przyjazny ton
-5. Na końcu zapytaj, czy zaproponowane rozwiązanie pomogło
+Na podstawie tych informacji i swojej wiedzy, stwórz odpowiedź zawierającą:
+1. **Prawdopodobna przyczyna problemu**
+2. **Rozwiązanie krok po kroku**
+3. **Dodatkowe wskazówki**
 
-Twoja odpowiedź powinna być ZWIĘZŁA i na temat."""
+Odpowiedź powinna być szczegółowa i profesjonalna, ale zrozumiała dla niespecjalisty."""
 
-            response = self.client.chat.completions.create(
-                model=self.default_model,
-                messages=[
-                    {"role": "system", "content": """Jesteś ekspertem technicznym specjalizującym się w ultrasonografach 
-                    i urządzeniach medycznych firmy Vet-Eye. Twoja wiedza techniczna jest na najwyższym poziomie."""},
-                    {"role": "user", "content": prompt}
-                ],
-                temperature=0.3,
-                max_tokens=1000
-            )
+            if not self.is_legacy:
+                # Nowe API OpenAI
+                response = self.client.chat.completions.create(
+                    model=self.default_model,
+                    messages=[
+                        {"role": "system", "content": "Jesteś asystentem technicznym specjalizującym się w diagnostyce i rozwiązywaniu problemów z urządzeniami medycznymi."},
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature=0.4,
+                    max_tokens=800
+                )
+                result = response.choices[0].message.content
+            else:
+                # Stare API OpenAI
+                response = self.client.chat.completions.create(
+                    model=self.default_model,
+                    messages=[
+                        {"role": "system", "content": "Jesteś asystentem technicznym specjalizującym się w diagnostyce i rozwiązywaniu problemów z urządzeniami medycznymi."},
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature=0.4,
+                    max_tokens=800
+                )
+                result = response.choices[0].message.content
             
-            result = response.choices[0].message.content
-            
-            # Ocena poziomu pewności odpowiedzi
-            confidence_prompt = f"""Na podstawie:
-            1. Opisu problemu: "{issue_description}"
-            2. Dostępnych rozwiązań z bazy wiedzy
-            3. Wygenerowanej odpowiedzi: "{result}"
-            
-            Oceń poziom pewności odpowiedzi w skali 0.0-1.0, gdzie:
-            - 0.0-0.3: Niski poziom pewności - odpowiedź jest ogólna, brak konkretnego dopasowania w bazie wiedzy
-            - 0.4-0.7: Średni poziom pewności - częściowe dopasowanie, ale mogą być potrzebne dodatkowe informacje
-            - 0.8-1.0: Wysoki poziom pewności - bardzo dobre dopasowanie, rozwiązanie powinno być skuteczne
-            
-            Zwróć TYLKO liczbę bez dodatkowego tekstu."""
-            
-            confidence_response = self.client.chat.completions.create(
-                model=self.default_model,
-                messages=[
-                    {"role": "system", "content": "Jesteś systemem oceniającym trafność dopasowania rozwiązań technicznych."},
-                    {"role": "user", "content": confidence_prompt}
-                ],
-                temperature=0.1,
-                max_tokens=10
-            )
-            
-            try:
-                confidence = float(confidence_response.choices[0].message.content.strip())
-            except ValueError:
-                confidence = 0.5  # Domyślna wartość w przypadku błędu
-            
-            return {
-                "solution": result,
-                "confidence_score": confidence
-            }
-            
+            logger.debug(f"AI solution analysis generated: {result[:100]}...")
+            return result
+        
         except Exception as e:
             logger.error(f"Error in analyze_problem_with_knowledge: {str(e)}", exc_info=True)
-            return {
-                "solution": f"Przepraszam, wystąpił błąd podczas analizy problemu. Sugeruję kontakt z serwisem.",
-                "confidence_score": 0.1
-            }
+            return f"""## Analiza problemu
+
+Na podstawie opisu problemu i dostępnych informacji, oto moja analiza:
+
+1. **Prawdopodobna przyczyna problemu**:
+   Trudno jednoznacznie określić przyczynę bez dodatkowych informacji. Problem może być związany z {device_model}.
+
+2. **Rozwiązanie krok po kroku**:
+   - Sprawdź, czy urządzenie jest prawidłowo podłączone
+   - Upewnij się, że wszystkie komponenty działają prawidłowo
+   - Zrestartuj urządzenie i sprawdź, czy problem ustąpił
+   - Jeśli problem nadal występuje, skontaktuj się z serwisem
+
+3. **Dodatkowe wskazówki**:
+   Aby uzyskać dokładniejszą diagnozę, prosimy o podanie bardziej szczegółowych informacji na temat objawów problemu.
+
+Czy potrzebujesz dodatkowej pomocy lub masz pytania?"""
     
     def _format_solutions(self, solutions: List[Dict]) -> str:
         """Formatuj rozwiązania do prompta"""
