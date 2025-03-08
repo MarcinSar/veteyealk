@@ -1,33 +1,38 @@
-from openai import OpenAI
 import logging
 from typing import Dict, List, Optional, Any
 import json
+
+# Próba importu różnych wersji OpenAI API
+try:
+    # Próba importu nowej wersji (1.0.0+)
+    from openai import OpenAI
+    USING_NEW_OPENAI = True
+    logging.getLogger(__name__).info("Using OpenAI new API (1.0.0+)")
+except (ImportError, AttributeError):
+    # Fallback do starszej wersji
+    import openai
+    USING_NEW_OPENAI = False
+    logging.getLogger(__name__).info("Using OpenAI legacy API (<1.0.0)")
 
 logger = logging.getLogger(__name__)
 
 class AIHelper:
     def __init__(self, api_key):
         """Inicjalizacja pomocnika AI"""
-        try:
-            # Próba inicjalizacji z nowszą wersją OpenAI bez dodatkowych parametrów
+        self.api_key = api_key
+        if USING_NEW_OPENAI:
+            # Nowa wersja API (1.0.0+)
             self.client = OpenAI(api_key=api_key)
+            self.default_model = "gpt-4o-mini"
             logger.info("OpenAI client initialized with modern SDK")
-        except Exception as e:
-            logger.warning(f"Error initializing modern OpenAI client: {str(e)}")
-            try:
-                # Próba inicjalizacji ze starszą wersją OpenAI
-                import openai as openai_legacy
-                openai_legacy.api_key = api_key
-                self.client = openai_legacy
-                self.is_legacy = True
-                logger.info("OpenAI client initialized with legacy SDK")
-            except Exception as e2:
-                logger.error(f"Failed to initialize any OpenAI client: {str(e2)}")
-                raise Exception(f"Could not initialize OpenAI: {str(e)}, then {str(e2)}")
+        else:
+            # Starsza wersja API (<1.0.0)
+            openai.api_key = api_key
+            self.client = openai
+            # Użyj kompatybilnego modelu dla starszej wersji API
+            self.default_model = "gpt-3.5-turbo"
+            logger.info("OpenAI client initialized with legacy SDK")
         
-        # Flaga do rozróżnienia nowego i starego API
-        self.is_legacy = False
-        self.default_model = "gpt-4o-mini"
         logger.info("AIHelper initialized")
         
     def analyze_issue(self, issue_description: str) -> str:
@@ -43,44 +48,42 @@ class AIHelper:
         try:
             logger.debug(f"Analyzing issue: {issue_description[:100]}...")
             
-            if not self.is_legacy:
-                # Nowe API OpenAI
-                response = self.client.chat.completions.create(
-                    model=self.default_model,
-                    messages=[
-                        {"role": "system", "content": """Jesteś asystentem technicznym specjalizującym się w ultrasonografach weterynaryjnych.
-                        Twoje odpowiedzi powinny być:
-                        1. Empatyczne i profesjonalne
-                        2. Zawierać podstawowe pytania diagnostyczne
-                        3. Skupiać się na wstępnej diagnozie problemu
-                        4. Pytać o kluczowe szczegóły aby zrozumieć problem
-                        
-                        Odpowiedź powinna być ZWIĘZŁA i KONKRETNA."""},
-                        {"role": "user", "content": f"Problem z urządzeniem: {issue_description}"}
-                    ],
-                    temperature=0.5,
-                    max_tokens=500
-                )
-            else:
-                # Starsze API OpenAI
-                response = self.client.chat.completions.create(
-                    model=self.default_model,
-                    messages=[
-                        {"role": "system", "content": """Jesteś asystentem technicznym specjalizującym się w ultrasonografach weterynaryjnych.
-                        Twoje odpowiedzi powinny być:
-                        1. Empatyczne i profesjonalne
-                        2. Zawierać podstawowe pytania diagnostyczne
-                        3. Skupiać się na wstępnej diagnozie problemu
-                        4. Pytać o kluczowe szczegóły aby zrozumieć problem
-                        
-                        Odpowiedź powinna być ZWIĘZŁA i KONKRETNA."""},
-                        {"role": "user", "content": f"Problem z urządzeniem: {issue_description}"}
-                    ],
-                    temperature=0.5,
-                    max_tokens=500
-                )
+            system_content = """Jesteś asystentem technicznym specjalizującym się w ultrasonografach weterynaryjnych.
+            Twoje odpowiedzi powinny być:
+            1. Empatyczne i profesjonalne
+            2. Zawierać podstawowe pytania diagnostyczne
+            3. Skupiać się na wstępnej diagnozie problemu
+            4. Pytać o kluczowe szczegóły aby zrozumieć problem
             
-            result = response.choices[0].message.content
+            Odpowiedź powinna być ZWIĘZŁA i KONKRETNA."""
+            
+            user_content = f"Problem z urządzeniem: {issue_description}"
+            
+            if USING_NEW_OPENAI:
+                # Nowa wersja API (1.0.0+)
+                response = self.client.chat.completions.create(
+                    model=self.default_model,
+                    messages=[
+                        {"role": "system", "content": system_content},
+                        {"role": "user", "content": user_content}
+                    ],
+                    temperature=0.5,
+                    max_tokens=500
+                )
+                result = response.choices[0].message.content
+            else:
+                # Starsza wersja API (<1.0.0)
+                response = self.client.ChatCompletion.create(
+                    model=self.default_model,
+                    messages=[
+                        {"role": "system", "content": system_content},
+                        {"role": "user", "content": user_content}
+                    ],
+                    temperature=0.5,
+                    max_tokens=500
+                )
+                result = response.choices[0]['message']['content']
+            
             logger.debug(f"AI response generated: {result[:100]}...")
             return result
             
@@ -125,12 +128,14 @@ Na podstawie tych informacji i swojej wiedzy, stwórz odpowiedź zawierającą:
 
 Odpowiedź powinna być szczegółowa i profesjonalna, ale zrozumiała dla niespecjalisty."""
 
-            if not self.is_legacy:
-                # Nowe API OpenAI
+            system_content = "Jesteś asystentem technicznym specjalizującym się w diagnostyce i rozwiązywaniu problemów z urządzeniami medycznymi."
+            
+            if USING_NEW_OPENAI:
+                # Nowa wersja API (1.0.0+)
                 response = self.client.chat.completions.create(
                     model=self.default_model,
                     messages=[
-                        {"role": "system", "content": "Jesteś asystentem technicznym specjalizującym się w diagnostyce i rozwiązywaniu problemów z urządzeniami medycznymi."},
+                        {"role": "system", "content": system_content},
                         {"role": "user", "content": prompt}
                     ],
                     temperature=0.4,
@@ -138,17 +143,17 @@ Odpowiedź powinna być szczegółowa i profesjonalna, ale zrozumiała dla niesp
                 )
                 result = response.choices[0].message.content
             else:
-                # Stare API OpenAI
-                response = self.client.chat.completions.create(
+                # Starsza wersja API (<1.0.0)
+                response = self.client.ChatCompletion.create(
                     model=self.default_model,
                     messages=[
-                        {"role": "system", "content": "Jesteś asystentem technicznym specjalizującym się w diagnostyce i rozwiązywaniu problemów z urządzeniami medycznymi."},
+                        {"role": "system", "content": system_content},
                         {"role": "user", "content": prompt}
                     ],
                     temperature=0.4,
                     max_tokens=800
                 )
-                result = response.choices[0].message.content
+                result = response.choices[0]['message']['content']
             
             logger.debug(f"AI solution analysis generated: {result[:100]}...")
             return result
@@ -172,7 +177,7 @@ Na podstawie opisu problemu i dostępnych informacji, oto moja analiza:
    Aby uzyskać dokładniejszą diagnozę, prosimy o podanie bardziej szczegółowych informacji na temat objawów problemu.
 
 Czy potrzebujesz dodatkowej pomocy lub masz pytania?"""
-    
+        
     def _format_solutions(self, solutions: List[Dict]) -> str:
         """Formatuj rozwiązania do prompta"""
         if not solutions:
