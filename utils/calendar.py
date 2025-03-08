@@ -27,11 +27,26 @@ class CalendarClient:
         self.logger = logger  # Użyj loggera zdefiniowanego powyżej
         self.logger.debug("Initializing CalendarClient")
         self.timezone = pytz.timezone('Europe/Warsaw')
-        self.airtable = Airtable(
-            base_id=os.getenv('AIRTABLE_BASE_ID'),
-            table_name='Calendar',
-            api_key=os.getenv('AIRTABLE_API_KEY')
-        )
+        
+        # Używamy parametrów pozycyjnych zamiast nazwanych dla większej kompatybilności
+        base_id = os.getenv('AIRTABLE_BASE_ID')
+        api_key = os.getenv('AIRTABLE_API_KEY')
+        
+        try:
+            # Próba inicjalizacji z airtable-python-wrapper
+            self.airtable = Airtable(base_id, 'Calendar', api_key)
+            self.logger.info("Initialized with airtable-python-wrapper")
+        except Exception as e:
+            self.logger.error(f"Error initializing with airtable-python-wrapper: {str(e)}")
+            try:
+                # Alternatywna inicjalizacja jeśli dostępny jest pyairtable
+                import pyairtable
+                self.airtable = pyairtable.Table(api_key, base_id, 'Calendar')
+                self.logger.info("Initialized with pyairtable")
+            except Exception as e2:
+                self.logger.error(f"Error initializing with pyairtable: {str(e2)}")
+                raise Exception(f"Failed to initialize any Airtable client: {str(e)}, then {str(e2)}")
+        
         self.logger.info("CalendarClient initialized successfully")
 
     def get_available_slots(self, start_date=None):
@@ -237,11 +252,13 @@ class CalendarClient:
         return all(field in event_data for field in required_fields)
 
     def safe_airtable_operation(self, operation):
+        """Bezpieczne wykonanie operacji Airtable z obsługą błędów i ponownymi próbami"""
         try:
             return operation()
         except Exception as e:
-            logger.error(f"Airtable operation failed: {e}")
-            return None
+            self.logger.error(f"Airtable operation error: {str(e)}")
+            # Można tu dodać logikę ponownych prób, obecnie po prostu przekazujemy błąd
+            raise
 
     def format_single_slot(self, slot):
         """Formatuj pojedynczy termin"""
