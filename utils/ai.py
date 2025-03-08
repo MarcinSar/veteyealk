@@ -23,14 +23,14 @@ class AIHelper:
         if USING_NEW_OPENAI:
             # Nowa wersja API (1.0.0+)
             self.client = OpenAI(api_key=api_key)
-            self.default_model = "gpt-4o-mini"
+            self.default_model = "gpt-4o"
             logger.info("OpenAI client initialized with modern SDK")
         else:
             # Starsza wersja API (<1.0.0)
             openai.api_key = api_key
             self.client = openai
             # Użyj kompatybilnego modelu dla starszej wersji API
-            self.default_model = "gpt-3.5-turbo"
+            self.default_model = "gpt-4"
             logger.info("OpenAI client initialized with legacy SDK")
         
         logger.info("AIHelper initialized")
