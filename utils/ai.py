@@ -32,7 +32,7 @@ class AIHelper:
                 self.client = openai
                 self.client_type = "legacy"
                 # Dostosowanie modelu do starszej wersji API
-                self.default_model = "gpt-4"
+                self.default_model = "gpt-4o"
                 logger.info("Successfully initialized OpenAI client with legacy API")
         except Exception as e:
             logger.error(f"Error initializing OpenAI client: {str(e)}")
@@ -90,8 +90,8 @@ class AIHelper:
                         {"role": "system", "content": system_content},
                         {"role": "user", "content": user_content}
                     ],
-                    temperature=0.5,
-                    max_tokens=500
+                    temperature=0.3,
+                    max_tokens=2000
                 )
                 result = response.choices[0].message.content
             elif self.client_type == "legacy":
@@ -102,8 +102,8 @@ class AIHelper:
                         {"role": "system", "content": system_content},
                         {"role": "user", "content": user_content}
                     ],
-                    temperature=0.5,
-                    max_tokens=500
+                    temperature=0.3,
+                    max_tokens=2000
                 )
                 result = response.choices[0]['message']['content']
             else:
@@ -167,7 +167,7 @@ Odpowiedź powinna być szczegółowa i profesjonalna, ale zrozumiała dla niesp
                         {"role": "user", "content": prompt}
                     ],
                     temperature=0.4,
-                    max_tokens=800
+                    max_tokens=2000
                 )
                 result = response.choices[0].message.content
             elif self.client_type == "legacy":
@@ -179,7 +179,7 @@ Odpowiedź powinna być szczegółowa i profesjonalna, ale zrozumiała dla niesp
                         {"role": "user", "content": prompt}
                     ],
                     temperature=0.4,
-                    max_tokens=800
+                    max_tokens=2000
                 )
                 result = response.choices[0]['message']['content']
             else:
