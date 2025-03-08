@@ -222,7 +222,16 @@ Niestety bez zgody na przetwarzanie danych osobowych nie mogę utworzyć zgłosz
 
 Mogę jednak spróbować pomóc Ci rozwiązać problem bez rejestrowania danych. Co chciałbyś wiedzieć o swoim urządzeniu?"""
     else:
-        return """### Przepraszam, ale aby kontynuować potrzebuję jasnej odpowiedzi.
+        # Sprawdź, czy użytkownik już wyraził zgodę RODO, ale wpisuje coś innego niż numer seryjny
+        if hasattr(st.session_state.context, 'gdpr_consent') and st.session_state.context.gdpr_consent:
+            return """### Potrzebuję numeru seryjnego Twojego urządzenia
+
+Aby kontynuować diagnostykę, proszę podaj numer seryjny w formacie: SN: XXXX
+(gdzie XXXX to właściwy numer seryjny urządzenia)
+
+Numer seryjny znajduje się na naklejce na spodzie lub z tyłu urządzenia."""
+        else:
+            return """### Przepraszam, ale aby kontynuować potrzebuję jasnej odpowiedzi.
 
 Czy wyrażasz zgodę na przetwarzanie danych osobowych zgodnie z RODO w przypadku konieczności utworzenia zgłoszenia serwisowego? 
 
@@ -260,6 +269,13 @@ def handle_issue_analysis(message: str, ai_helper: AIHelper, knowledge_base: Kno
     try:
         # Get device model from context
         model = st.session_state.context.verified_device.get('model', 'unknown')
+        
+        # Check if the question is on-topic
+        topic_check = ai_helper.is_on_topic(message)
+        if not topic_check.get("is_on_topic", True):
+            # Jeśli pytanie nie jest związane z urządzeniami, zwróć odpowiednią odpowiedź
+            logger.warning(f"Detected off-topic question: {message}")
+            return topic_check.get("response", "Przepraszam, mogę odpowiadać tylko na pytania związane z urządzeniami Vet-Eye.")
         
         # Get solutions from knowledge base
         solutions, _ = knowledge_base.find_solution(model, message)

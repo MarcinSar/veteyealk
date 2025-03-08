@@ -211,19 +211,76 @@ Na podstawie opisu problemu i dostępnych informacji, oto moja analiza:
 Czy potrzebujesz dodatkowej pomocy lub masz pytania?"""
         
     def _format_solutions(self, solutions: List[Dict]) -> str:
-        """Formatuj rozwiązania do prompta"""
-        if not solutions:
-            return "Brak dokładnych dopasowań w bazie wiedzy dla tego problemu."
-        
-        formatted = []
+        """Format solutions for inclusion in prompt"""
+        formatted = ""
         for i, solution in enumerate(solutions, 1):
-            relevance = solution.get('relevance', 0) * 100
-            solution_type = solution.get('type', 'unknown')
-            content = solution.get('content', 'Brak treści')
-            
-            formatted.append(f"Rozwiązanie {i} (Trafność: {relevance:.0f}%, Typ: {solution_type}):\n{content}\n")
+            formatted += f"Rozwiązanie {i}:\n"
+            formatted += f"Problem: {solution.get('problem', 'Nieznany problem')}\n"
+            formatted += f"Rozwiązanie: {solution.get('solution', 'Brak rozwiązania')}\n\n"
+        return formatted if formatted else "Brak odpowiednich rozwiązań w bazie wiedzy."
+    
+    def is_on_topic(self, query: str) -> Dict[str, Any]:
+        """
+        Sprawdza, czy zapytanie jest związane z tematyką urządzeń i serwisu.
         
-        return "\n".join(formatted)
+        Args:
+            query: Zapytanie użytkownika
+            
+        Returns:
+            Dict: Zawiera 'is_on_topic' (bool) i 'response' (str) jeśli zapytanie jest off-topic
+        """
+        try:
+            if self.client is None:
+                # Fallback - zakładamy, że pytanie jest na temat
+                return {"is_on_topic": True}
+                
+            prompt = f"""Oceń, czy następujące zapytanie jest związane z tematyką urządzeń medycznych, ich serwisem, problemami technicznymi lub użytkowaniem: 
+            
+            Zapytanie: "{query}"
+            
+            Odpowiedz tylko "TAK" jeśli zapytanie jest związane z tematyką urządzeń medycznych, ich serwisem, problemami technicznymi lub użytkowaniem.
+            Odpowiedz "NIE" jeśli zapytanie dotyczy polityki, plotek, tematów osobistych, opinii na kontrowersyjne tematy lub innych kwestii niezwiązanych z urządzeniami medycznymi i ich serwisem."""
+
+            system_content = "Jesteś precyzyjnym asystentem, który ocenia, czy pytania są związane z tematyką urządzeń medycznych i ich serwisu. Odpowiadaj tylko TAK lub NIE."
+            
+            if self.client_type == "new":
+                response = self.client.chat.completions.create(
+                    model=self.default_model,
+                    messages=[
+                        {"role": "system", "content": system_content},
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature=0.1,
+                    max_tokens=10
+                )
+                result = response.choices[0].message.content.strip().upper()
+            elif self.client_type == "legacy":
+                response = self.client.ChatCompletion.create(
+                    model=self.default_model,
+                    messages=[
+                        {"role": "system", "content": system_content},
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature=0.1,
+                    max_tokens=10
+                )
+                result = response.choices[0]['message']['content'].strip().upper()
+            else:
+                # Fallback - zakładamy, że pytanie jest na temat
+                return {"is_on_topic": True}
+            
+            if result == "NIE":
+                off_topic_response = """Przepraszam, ale jako asystent serwisowy Vet-Eye mogę odpowiadać wyłącznie na pytania związane z urządzeniami medycznymi naszej firmy, ich obsługą, konfiguracją i problemami technicznymi.
+
+Czy mógłbyś zadać pytanie dotyczące Twojego urządzenia Vet-Eye lub opisać problem techniczny, z którym się spotkałeś? Jestem tu, aby pomóc Ci w rozwiązaniu problemów z urządzeniem."""
+                return {"is_on_topic": False, "response": off_topic_response}
+            else:
+                return {"is_on_topic": True}
+                
+        except Exception as e:
+            logger.error(f"Error in is_on_topic: {str(e)}", exc_info=True)
+            # W przypadku błędu, zakładamy że pytanie jest na temat
+            return {"is_on_topic": True}
     
     def get_service_questions(self) -> List[str]:
         """Zwraca listę pytań potrzebnych do zgłoszenia serwisowego"""
