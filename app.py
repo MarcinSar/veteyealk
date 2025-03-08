@@ -277,7 +277,9 @@ def handle_issue_analysis(message: str, ai_helper: AIHelper, knowledge_base: Kno
         
         # Attempt state transition
         if set_state(ConversationState.CHECK_RESOLUTION):
-            return response
+            return f"""{response}
+
+**Czy powyższe instrukcje pomogły rozwiązać Twój problem? (tak/nie)**"""
         else:
             return "Przepraszam, wystąpił błąd podczas analizy problemu. Spróbuj ponownie."
             
