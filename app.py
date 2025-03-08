@@ -382,8 +382,28 @@ def handle_check_resolution(message: str) -> str:
         # Zapisz informacje od użytkownika w kontekście
         st.session_state.context.additional_info = st.session_state.context.additional_info + "\n" + message if hasattr(st.session_state.context, 'additional_info') else message
         
-        # Zadaj ponownie pytanie, ale uwzględnij uzyskane informacje
-        return f"Dziękuję za dodatkowe informacje. Teraz lepiej rozumiem Twój problem. Czy proponowane wcześniej rozwiązanie pomogło? Proszę odpowiedzieć 'tak' lub 'nie'."
+        # Zamiast pytać ponownie o skuteczność, zaproponuj nowe rozwiązanie
+        issue_description = st.session_state.context.issue_description.lower() if hasattr(st.session_state.context, 'issue_description') else ""
+        
+        if "zdjęcia" in issue_description or "obraz" in issue_description or "jakość obrazu" in issue_description:
+            return ("Dziękuję za dodatkowe informacje. Na podstawie dostarczonych szczegółów, proponuję następujące rozwiązanie problemu z jakością obrazu:\n\n"
+                   "1. Wykonaj pełną kalibrację urządzenia z menu serwisowego (dostęp: przytrzymaj przycisk zasilania + przycisk funkcyjny F2 podczas włączania).\n"
+                   "2. Sprawdź, czy wszystkie filtry obrazu są prawidłowo skonfigurowane.\n"
+                   "3. Spróbuj przełączyć urządzenie w tryb diagnostyczny, który oferuje lepszą jakość obrazu do celów testowych.\n\n"
+                   "Czy udało Ci się wykonać te czynności i czy przyniosły one poprawę?")
+        elif "restart" in issue_description or "wyłącza" in issue_description or "zawiesza" in issue_description:
+            return ("Dziękuję za dodatkowe informacje. Na podstawie dostarczonych szczegółów, proponuję następujące rozwiązanie problemu z restartami:\n\n"
+                   "1. Wykonaj diagnostykę sprzętową z menu rozruchowego (dostęp przez przytrzymanie przycisku funkcyjnego podczas włączania).\n"
+                   "2. Sprawdź logi systemowe, które mogą wskazywać na przyczynę problemów.\n"
+                   "3. Jeśli możliwe, podłącz urządzenie do zasilania przez stabilizator napięcia, aby wyeliminować problemy z zasilaniem.\n\n"
+                   "Czy udało Ci się wykonać te czynności i czy przyniosły one poprawę?")
+        else:
+            # Ogólne rozwiązania dla pozostałych problemów
+            return ("Dziękuję za dodatkowe informacje. Na ich podstawie proponuję następujące rozwiązanie:\n\n"
+                   "1. Wykonaj pełną diagnostykę urządzenia z menu serwisowego.\n"
+                   "2. Sprawdź, czy są dostępne aktualizacje oprogramowania dla Twojego modelu urządzenia.\n"
+                   "3. Wykonaj procedurę czyszczenia pamięci podręcznej urządzenia (cache).\n\n"
+                   "Czy udało Ci się wykonać te czynności i czy przyniosły one poprawę?")
 
 def handle_issue_reported(message: str) -> str:
     """Obsługuje zgłoszenie problemu"""
