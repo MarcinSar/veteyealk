@@ -123,20 +123,28 @@ def initialize_session_state():
         # Dodaj wiadomość powitalną
         st.session_state.messages.append({
             "role": "assistant",
-            "content": """👋 Witaj w serwisie wsparcia technicznego Vet-Eye!
+            "content": """## 👋 Witaj w serwisie wsparcia technicznego Vet-Eye!
+
 Jestem Agentem AI i moim zadaniem jest udzielenie wsparcia w celu rozwiązania Twoich problemów z urządzeniem wyprodukowanym przez Vet-Eye.
-Aby kontynuować naszą rozmowę potrzebuję Twojej zgody na:
-    1. rozpoczęcie interakcji ze mną, jako Agentem AI. Musisz wiedzieć, że nie jestem człowiekiem, tylko systemem sztucznej inteligencji, który będzie przetwarzał informacje wprowadzone przez Ciebie podczas rozmowy w celu zdiagnozowania opisywanych przez Ciebie problemów technicznych i ich rozwiązania, a także
-    2. przetwarzanie Twoich danych osobowych przez VetEye Sp. z o.o., jako Administrator danych osobowych, zgodnie z przepisami rozporządzenia RODO, w przypadku konieczności utworzenia zgłoszenia serwisowego.
-Informacje o przetwarzaniu danych:
-    • Twoje dane osobowe będą zbierane tylko wtedy, gdy nie uda się rozwiązać zgłoszonego problemu i konieczne będzie przygotowanie zlecenia serwisowego;
-    • Twoje dane osobowe będą przetwarzane w celu przygotowania zlecenia serwisowego i jego późniejszej obsługi oraz kontaktu naszego serwisu w sprawie realizacji tego zlecenia;
-    • Twoje dane osobowe będą przechowywane przez okres niezbędny do realizacji usługi oraz wymagany przepisami prawa;
-    • przysługuje Ci prawo dostępu do swoich danych, ich sprostowania, usunięcia, ograniczenia przetwarzania, a także ich przenoszenia oraz wniesienia sprzeciwu;
-    • masz prawo wniesienia skargi do Urzędu Ochrony Danych Osobowych, jeżeli Twoje dane osobowe będą przetwarzane niezgodnie z deklaracją Administratora Danych Osobowych;
-    • szczegółowe informacje nt. znajdziesz w naszej Polityce Prywatności.
-Czy wyrażasz zgodę na powyższe warunki? (tak/nie)
-Uwaga: Brak Twojej zgody na którykolwiek z powyższych punktów, uniemożliwi rozpoczęcie naszej rozmowy, zdiagnozowanie problemu i uzyskanie wsparcia technicznego."""
+
+### Aby kontynuować naszą rozmowę potrzebuję Twojej zgody na:
+
+1. Rozpoczęcie interakcji ze mną, jako Agentem AI. Musisz wiedzieć, że nie jestem człowiekiem, tylko systemem sztucznej inteligencji, który będzie przetwarzał informacje wprowadzone przez Ciebie podczas rozmowy w celu zdiagnozowania opisywanych przez Ciebie problemów technicznych i ich rozwiązania, a także
+
+2. Przetwarzanie Twoich danych osobowych przez VetEye Sp. z o.o., jako Administrator danych osobowych, zgodnie z przepisami rozporządzenia RODO, w przypadku konieczności utworzenia zgłoszenia serwisowego.
+
+### Informacje o przetwarzaniu danych:
+
+* Twoje dane osobowe będą zbierane tylko wtedy, gdy nie uda się rozwiązać zgłoszonego problemu i konieczne będzie przygotowanie zlecenia serwisowego
+* Twoje dane osobowe będą przetwarzane w celu przygotowania zlecenia serwisowego i jego późniejszej obsługi oraz kontaktu naszego serwisu w sprawie realizacji tego zlecenia
+* Twoje dane osobowe będą przechowywane przez okres niezbędny do realizacji usługi oraz wymagany przepisami prawa
+* Przysługuje Ci prawo dostępu do swoich danych, ich sprostowania, usunięcia, ograniczenia przetwarzania, a także ich przenoszenia oraz wniesienia sprzeciwu
+* Masz prawo wniesienia skargi do Urzędu Ochrony Danych Osobowych, jeżeli Twoje dane osobowe będą przetwarzane niezgodnie z deklaracją Administratora Danych Osobowych
+* Szczegółowe informacje znajdziesz w naszej Polityce Prywatności
+
+**Czy wyrażasz zgodę na powyższe warunki? (tak/nie)**
+
+*Uwaga: Brak Twojej zgody na którykolwiek z powyższych punktów, uniemożliwi rozpoczęcie naszej rozmowy, zdiagnozowanie problemu i uzyskanie wsparcia technicznego.*"""
         })
     
     # Dostępne terminy
@@ -199,13 +207,25 @@ def handle_welcome(message: str) -> str:
         st.session_state.context.gdpr_consent = True
         # Then attempt state transition
         if set_state(ConversationState.DEVICE_VERIFICATION):
-            return """Dziękuję za zgodę! 🙂 Aby pomóc Ci w diagnostyce, potrzebuję numeru seryjnego Twojego urządzenia. Pomoże mi to lepiej zrozumieć problem i pomóc Ci w jego rozwiązaniu i jednocześnie sprawdzić czy urządzenie jest objęte gwarancją. Proszę podaj numer seryjny w formacie: SN"""
+            return """### Dziękuję za zgodę! 🙂 
+
+Aby pomóc Ci w diagnostyce, potrzebuję numeru seryjnego Twojego urządzenia. Pomoże mi to lepiej zrozumieć problem i pomóc Ci w jego rozwiązaniu i jednocześnie sprawdzić czy urządzenie jest objęte gwarancją. 
+
+**Proszę podaj numer seryjny w formacie: SN**"""
         else:
             return "Przepraszam, wystąpił błąd podczas przetwarzania zgody. Spróbuj ponownie."
     elif message.lower() in ['nie', 'n', 'no']:
-        return """Rozumiem Twoją decyzję. Niestety bez zgody na przetwarzanie danych osobowych nie mogę utworzyć zgłoszenia serwisowego w razie takiej potrzeby. Mogę jednak spróbować pomóc Ci rozwiązać problem bez rejestrowania danych. Co chciałbyś wiedzieć o swoim urządzeniu?"""
+        return """### Rozumiem Twoją decyzję. 
+
+Niestety bez zgody na przetwarzanie danych osobowych nie mogę utworzyć zgłoszenia serwisowego w razie takiej potrzeby. 
+
+Mogę jednak spróbować pomóc Ci rozwiązać problem bez rejestrowania danych. Co chciałbyś wiedzieć o swoim urządzeniu?"""
     else:
-        return """Przepraszam, ale aby kontynuować i ewentualnie utworzyć zgłoszenie serwisowe, potrzebuję Twojej zgody na przetwarzanie danych osobowych zgodnie z RODO. Czy wyrażasz zgodę? (tak/nie)"""
+        return """### Przepraszam, ale aby kontynuować potrzebuję jasnej odpowiedzi.
+
+Czy wyrażasz zgodę na przetwarzanie danych osobowych zgodnie z RODO w przypadku konieczności utworzenia zgłoszenia serwisowego? 
+
+**Proszę odpowiedz: tak lub nie**"""
 
 def handle_device_verification(message: str, airtable_client: AirtableClient) -> str:
     """Obsługuje weryfikację urządzenia"""
@@ -221,13 +241,18 @@ def handle_device_verification(message: str, airtable_client: AirtableClient) ->
         st.session_state.context.verified_device = device
         
         set_state(ConversationState.ISSUE_ANALYSIS)
-        return f"""✅ Zweryfikowano urządzenie:
-Model: {st.session_state.current_model}
-Status gwarancji: {warranty}
+        return f"""### ✅ Zweryfikowano urządzenie:
+
+**Model:** {st.session_state.current_model}
+**Status gwarancji:** {warranty}
 
 Proszę opisać problem z urządzeniem."""
     else:
-        return f"❌ {result['message']}. Proszę sprawdzić i spróbować ponownie."
+        return f"""### ❌ Nie znaleziono urządzenia
+
+{result['message']}
+
+Proszę sprawdzić i spróbować ponownie."""
 
 def handle_issue_analysis(message: str, ai_helper: AIHelper, knowledge_base: KnowledgeBase) -> str:
     """Obsługuje analizę problemu"""
