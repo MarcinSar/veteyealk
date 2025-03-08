@@ -123,7 +123,20 @@ def initialize_session_state():
         # Dodaj wiadomość powitalną
         st.session_state.messages.append({
             "role": "assistant",
-            "content": """👋 Witaj w serwisie VetEye! Jestem asystentem AI i pomogę rozwiązać problemy z urządzeniem. Zanim zaczniemy, chciałbym Cię poinformować, że potrzebuję Twojej zgody na przetwarzanie danych osobowych zgodnie z RODO na wypadek gdybyśmy musieli utworzyć zgłoszenie serwisowe. Czy wyrażasz zgodę? (tak/nie)"""
+            "content": """👋 Witaj w serwisie wsparcia technicznego Vet-Eye!
+Jestem Agentem AI i moim zadaniem jest udzielenie wsparcia w celu rozwiązania Twoich problemów z urządzeniem wyprodukowanym przez Vet-Eye.
+Aby kontynuować naszą rozmowę potrzebuję Twojej zgody na:
+    1. rozpoczęcie interakcji ze mną, jako Agentem AI. Musisz wiedzieć, że nie jestem człowiekiem, tylko systemem sztucznej inteligencji, który będzie przetwarzał informacje wprowadzone przez Ciebie podczas rozmowy w celu zdiagnozowania opisywanych przez Ciebie problemów technicznych i ich rozwiązania, a także
+    2. przetwarzanie Twoich danych osobowych przez VetEye Sp. z o.o., jako Administrator danych osobowych, zgodnie z przepisami rozporządzenia RODO, w przypadku konieczności utworzenia zgłoszenia serwisowego.
+Informacje o przetwarzaniu danych:
+    • Twoje dane osobowe będą zbierane tylko wtedy, gdy nie uda się rozwiązać zgłoszonego problemu i konieczne będzie przygotowanie zlecenia serwisowego;
+    • Twoje dane osobowe będą przetwarzane w celu przygotowania zlecenia serwisowego i jego późniejszej obsługi oraz kontaktu naszego serwisu w sprawie realizacji tego zlecenia;
+    • Twoje dane osobowe będą przechowywane przez okres niezbędny do realizacji usługi oraz wymagany przepisami prawa;
+    • przysługuje Ci prawo dostępu do swoich danych, ich sprostowania, usunięcia, ograniczenia przetwarzania, a także ich przenoszenia oraz wniesienia sprzeciwu;
+    • masz prawo wniesienia skargi do Urzędu Ochrony Danych Osobowych, jeżeli Twoje dane osobowe będą przetwarzane niezgodnie z deklaracją Administratora Danych Osobowych;
+    • szczegółowe informacje nt. znajdziesz w naszej Polityce Prywatności.
+Czy wyrażasz zgodę na powyższe warunki? (tak/nie)
+Uwaga: Brak Twojej zgody na którykolwiek z powyższych punktów, uniemożliwi rozpoczęcie naszej rozmowy, zdiagnozowanie problemu i uzyskanie wsparcia technicznego."""
         })
     
     # Dostępne terminy
@@ -236,12 +249,9 @@ def handle_issue_analysis(message: str, ai_helper: AIHelper, knowledge_base: Kno
         # Set issue description in context
         st.session_state.context.issue_description = message
         
-        # Extract solution text from response dictionary
-        solution_text = response['solution'] if isinstance(response, dict) and 'solution' in response else response
-        
         # Attempt state transition
         if set_state(ConversationState.CHECK_RESOLUTION):
-            return solution_text
+            return response
         else:
             return "Przepraszam, wystąpił błąd podczas analizy problemu. Spróbuj ponownie."
             
