@@ -123,7 +123,7 @@ def initialize_session_state():
         # Dodaj wiadomość powitalną
         st.session_state.messages.append({
             "role": "assistant",
-            "content": "👋 Witaj w serwisie VetEye! Jestem asystentem AI i pomogę rozwiązać problemy z urządzeniem. Zanim zaczniemy, chciałbym Cię poinformować, że potrzebuję Twojej zgody na przetwarzanie danych osobowych zgodnie z RODO na wypadek gdybyśmy musieli utworzyć zgłoszenie serwisowe. Czy wyrażasz zgodę? (tak/nie)"
+            "content": """👋 Witaj w serwisie VetEye! Jestem asystentem AI i pomogę rozwiązać problemy z urządzeniem. Zanim zaczniemy, chciałbym Cię poinformować, że potrzebuję Twojej zgody na przetwarzanie danych osobowych zgodnie z RODO na wypadek gdybyśmy musieli utworzyć zgłoszenie serwisowe. Czy wyrażasz zgodę? (tak/nie)"""
         })
     
     # Dostępne terminy
@@ -186,13 +186,13 @@ def handle_welcome(message: str) -> str:
         st.session_state.context.gdpr_consent = True
         # Then attempt state transition
         if set_state(ConversationState.DEVICE_VERIFICATION):
-            return "Dziękuję za zgodę! 🙂 Aby pomóc Ci w diagnostyce, potrzebuję numeru seryjnego Twojego urządzenia. Pomoże mi to lepiej zrozumieć problem i pomóc Ci w jego rozwiązaniu i jednocześnie sprawdzić czy urządzenie jest objęte gwarancją. Proszę podaj numer seryjny w formacie: SN:XXXXX"
+            return """Dziękuję za zgodę! 🙂 Aby pomóc Ci w diagnostyce, potrzebuję numeru seryjnego Twojego urządzenia. Pomoże mi to lepiej zrozumieć problem i pomóc Ci w jego rozwiązaniu i jednocześnie sprawdzić czy urządzenie jest objęte gwarancją. Proszę podaj numer seryjny w formacie: SN"""
         else:
             return "Przepraszam, wystąpił błąd podczas przetwarzania zgody. Spróbuj ponownie."
     elif message.lower() in ['nie', 'n', 'no']:
-        return "Rozumiem Twoją decyzję. Niestety bez zgody na przetwarzanie danych osobowych nie mogę utworzyć zgłoszenia serwisowego w razie takiej potrzeby. Mogę jednak spróbować pomóc Ci rozwiązać problem bez rejestrowania danych. Co chciałbyś wiedzieć o swoim urządzeniu?"
+        return """Rozumiem Twoją decyzję. Niestety bez zgody na przetwarzanie danych osobowych nie mogę utworzyć zgłoszenia serwisowego w razie takiej potrzeby. Mogę jednak spróbować pomóc Ci rozwiązać problem bez rejestrowania danych. Co chciałbyś wiedzieć o swoim urządzeniu?"""
     else:
-        return "Przepraszam, ale aby kontynuować i ewentualnie utworzyć zgłoszenie serwisowe, potrzebuję Twojej zgody na przetwarzanie danych osobowych zgodnie z RODO. Czy wyrażasz zgodę? (tak/nie)"
+        return """Przepraszam, ale aby kontynuować i ewentualnie utworzyć zgłoszenie serwisowe, potrzebuję Twojej zgody na przetwarzanie danych osobowych zgodnie z RODO. Czy wyrażasz zgodę? (tak/nie)"""
 
 def handle_device_verification(message: str, airtable_client: AirtableClient) -> str:
     """Obsługuje weryfikację urządzenia"""
@@ -208,12 +208,11 @@ def handle_device_verification(message: str, airtable_client: AirtableClient) ->
         st.session_state.context.verified_device = device
         
         set_state(ConversationState.ISSUE_ANALYSIS)
-        return (
-            f"✅ Zweryfikowano urządzenie:\n"
-            f"Model: {st.session_state.current_model}\n, "
-            f"Status gwarancji: {warranty}\n\n"
-            "Proszę opisać problem z urządzeniem."
-        )
+        return f"""✅ Zweryfikowano urządzenie:
+Model: {st.session_state.current_model}
+Status gwarancji: {warranty}
+
+Proszę opisać problem z urządzeniem."""
     else:
         return f"❌ {result['message']}. Proszę sprawdzić i spróbować ponownie."
 
