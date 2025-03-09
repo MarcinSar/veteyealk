@@ -230,6 +230,11 @@ Czy potrzebujesz dodatkowej pomocy lub masz pytania?"""
             Dict: Zawiera 'is_on_topic' (bool) i 'response' (str) jeśli zapytanie jest off-topic
         """
         try:
+            # Domyślnie zakładamy, że krótkie zapytania są na temat
+            # Większość opisów problemów jest krótka, np. "nie działa", "wolno chodzi"
+            if len(query.strip()) <= 30:
+                return {"is_on_topic": True}
+                
             # Prosta heurystyka - sprawdź, czy zapytanie zawiera słowa kluczowe związane z urządzeniami
             device_keywords = [
                 "urządzenie", "urządzenia", "sprzęt", "aparat", "zdjęcia", "zdjęcie", "obraz", "obrazy", 
@@ -237,7 +242,12 @@ Czy potrzebujesz dodatkowej pomocy lub masz pytania?"""
                 "włącza", "wyłącza", "restart", "zawiesza", "problem", "usterka", "awaria", "naprawa",
                 "serwis", "gwarancja", "ekran", "wyświetlacz", "bateria", "zasilanie", "kabel", "głowica",
                 "sonda", "przycisk", "menu", "ustawienia", "kalibracja", "diagnostyka", "błąd", "error",
-                "vet", "eye", "vet-eye", "weterynaryjne", "weterynaryjny", "medyczne", "medyczny"
+                "vet", "eye", "vet-eye", "weterynaryjne", "weterynaryjny", "medyczne", "medyczny",
+                # Dodajemy słowa opisujące ogólne problemy
+                "wolno", "chodzi", "działa", "nie działa", "źle", "problem", "powoli", "szybko",
+                "zawiesza", "zawiesił", "zacina", "zacięło", "błąd", "błędy", "psuje", "zepsuło",
+                "uszkodzone", "uszkodzony", "popsuty", "popsute", "słabo", "kiepsko", "wadliwy",
+                "wadliwie", "awaryjny", "awaria", "usterka", "nie", "tak", "pomocy", "pomoc"
             ]
             
             # Sprawdź, czy zapytanie zawiera jakiekolwiek słowo kluczowe
@@ -250,61 +260,25 @@ Czy potrzebujesz dodatkowej pomocy lub masz pytania?"""
             if len(query.strip()) <= 5:
                 return {"is_on_topic": True}
                 
-            # Jeśli nie znaleziono słów kluczowych, użyj AI do oceny
-            if self.client is None:
-                # Fallback - zakładamy, że pytanie jest na temat
-                return {"is_on_topic": True}
-                
-            prompt = f"""Oceń, czy następujące zapytanie jest związane z tematyką urządzeń medycznych, ich serwisem, problemami technicznymi lub użytkowaniem: 
+            # Sprawdź, czy zapytanie zawiera wyraźne słowa kluczowe związane z polityką, plotkami itp.
+            off_topic_keywords = [
+                "trump", "biden", "polityka", "wybory", "partia", "prezydent", "premier", 
+                "rząd", "sejm", "senat", "ustawa", "prawo", "przepisy", "konstytucja",
+                "celebryta", "gwiazda", "aktor", "aktorka", "piosenkarz", "piosenkarka",
+                "sport", "mecz", "piłka", "liga", "mistrzostwa", "olimpiada",
+                "pogoda", "klimat", "temperatura", "deszcz", "śnieg", "burza"
+            ]
             
-            Zapytanie: "{query}"
-            
-            Odpowiedz tylko "TAK" jeśli zapytanie jest związane z tematyką urządzeń medycznych, ich serwisem, problemami technicznymi lub użytkowaniem.
-            Odpowiedz "NIE" jeśli zapytanie dotyczy polityki, plotek, tematów osobistych, opinii na kontrowersyjne tematy lub innych kwestii niezwiązanych z urządzeniami medycznymi i ich serwisem.
-            
-            WAŻNE: Jeśli zapytanie dotyczy problemów z urządzeniem, takich jak "nie działa", "zepsuty", "problem z", "nie robi zdjęć", "niewyraźne zdjęcia" itp., odpowiedz "TAK".
-            Jeśli nie masz pewności, odpowiedz "TAK"."""
-
-            system_content = "Jesteś precyzyjnym asystentem, który ocenia, czy pytania są związane z tematyką urządzeń medycznych i ich serwisu. Odpowiadaj tylko TAK lub NIE."
-            
-            if self.client_type == "new":
-                response = self.client.chat.completions.create(
-                    model=self.default_model,
-                    messages=[
-                        {"role": "system", "content": system_content},
-                        {"role": "user", "content": prompt}
-                    ],
-                    temperature=0.1,
-                    max_tokens=10
-                )
-                result = response.choices[0].message.content.strip().upper()
-            elif self.client_type == "legacy":
-                response = self.client.ChatCompletion.create(
-                    model=self.default_model,
-                    messages=[
-                        {"role": "system", "content": system_content},
-                        {"role": "user", "content": prompt}
-                    ],
-                    temperature=0.1,
-                    max_tokens=10
-                )
-                result = response.choices[0]['message']['content'].strip().upper()
-            else:
-                # Fallback - zakładamy, że pytanie jest na temat
-                return {"is_on_topic": True}
-            
-            # Tylko jeśli model jest bardzo pewny, że to NIE jest na temat, zwróć False
-            if result == "NIE":
-                # Dodatkowe sprawdzenie - jeśli zapytanie zawiera słowo "urządzenie" lub "problem", uznaj je za on-topic
-                if "urządzenie" in query_lower or "problem" in query_lower or "nie" in query_lower:
-                    return {"is_on_topic": True}
-                    
-                off_topic_response = """Przepraszam, ale jako asystent serwisowy Vet-Eye mogę odpowiadać wyłącznie na pytania związane z urządzeniami medycznymi naszej firmy, ich obsługą, konfiguracją i problemami technicznymi.
+            # Jeśli zapytanie zawiera wyraźne słowa off-topic, zwróć False
+            for keyword in off_topic_keywords:
+                if keyword.lower() in query_lower:
+                    off_topic_response = """Przepraszam, ale jako asystent serwisowy Vet-Eye mogę odpowiadać wyłącznie na pytania związane z urządzeniami medycznymi naszej firmy, ich obsługą, konfiguracją i problemami technicznymi.
 
 Czy mógłbyś zadać pytanie dotyczące Twojego urządzenia Vet-Eye lub opisać problem techniczny, z którym się spotkałeś? Jestem tu, aby pomóc Ci w rozwiązaniu problemów z urządzeniem."""
-                return {"is_on_topic": False, "response": off_topic_response}
-            else:
-                return {"is_on_topic": True}
+                    return {"is_on_topic": False, "response": off_topic_response}
+            
+            # Jeśli nie znaleziono wyraźnych słów off-topic, uznaj zapytanie za on-topic
+            return {"is_on_topic": True}
                 
         except Exception as e:
             logger.error(f"Error in is_on_topic: {str(e)}", exc_info=True)
