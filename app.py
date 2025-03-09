@@ -219,7 +219,7 @@ Aby pomóc Ci w diagnostyce, potrzebuję numeru seryjnego Twojego urządzenia. P
         # Zwróć komunikat o zakończeniu rozmowy bez zmiany stanu
         return """### Rozumiem Twoją decyzję.
 
-Niestety bez Twojej zgody na przetwarzanie danych osobowych nie możemy kontynuować rozmowy ani udzielić wsparcia technicznego poprzez tego asystenta.
+Niestety bez Twojej zgody na przetwarzanie danych osobowych i rozmowę z Agentem AI nie możemy kontynuować rozmowy ani udzielić wsparcia technicznego poprzez tego asystenta.
 
 Jeśli nadal potrzebujesz pomocy z urządzeniem, prosimy o bezpośredni kontakt z naszym działem serwisu:
 
