@@ -245,7 +245,7 @@ Czy wyrażasz zgodę na przetwarzanie danych osobowych zgodnie z RODO w przypadk
 
 **Proszę odpowiedz: tak lub nie**"""
 
-def handle_device_verification(message: str, airtable_client: AirtableClient) -> str:
+def handle_device_verification(message: str, airtable_client: AirtableClient, calendar_client: CalendarClient = None) -> str:
     """Obsługuje weryfikację urządzenia"""
     # Sprawdź, czy wiadomość wygląda jak numer seryjny
     if not message.lower().startswith("sn:") and not message.lower().startswith("sn "):
@@ -257,6 +257,13 @@ Aby kontynuować diagnostykę, proszę podaj numer seryjny w formacie: SN: XXXX
 
 Numer seryjny znajduje się na naklejce na spodzie lub z tyłu urządzenia."""
     
+    # Wyciągnij numer seryjny z wiadomości
+    serial_number = message.strip()
+    if serial_number.lower().startswith("sn:"):
+        serial_number = serial_number[3:].strip()
+    elif serial_number.lower().startswith("sn "):
+        serial_number = serial_number[3:].strip()
+    
     result = airtable_client.get_device_info(message)
     
     if result["status"] == "success":
@@ -267,6 +274,20 @@ Numer seryjny znajduje się na naklejce na spodzie lub z tyłu urządzenia."""
         
         # Zapisz urządzenie w kontekście
         st.session_state.context.verified_device = device
+        
+        # Zapisz numer seryjny do tabeli Calendar w kolumnie dev_sn
+        if calendar_client:
+            try:
+                # Utwórz pusty rekord w tabeli Calendar z numerem seryjnym
+                record = {
+                    'dev_sn': serial_number
+                }
+                
+                # Użyj bezpośrednio obiektu Airtable z calendar_client
+                calendar_client.airtable.insert(record)
+                logger.info(f"Zapisano numer seryjny {serial_number} do tabeli Calendar")
+            except Exception as e:
+                logger.error(f"Błąd podczas zapisywania numeru seryjnego do tabeli Calendar: {str(e)}")
         
         set_state(ConversationState.ISSUE_ANALYSIS)
         return f"""### ✅ Zweryfikowano urządzenie:
@@ -885,7 +906,7 @@ def main():
                         response = handle_welcome(prompt)
                     
                     elif current_state == ConversationState.DEVICE_VERIFICATION:
-                        response = handle_device_verification(prompt, airtable_client)
+                        response = handle_device_verification(prompt, airtable_client, calendar_client)
                     
                     elif current_state == ConversationState.ISSUE_ANALYSIS:
                         response = handle_issue_analysis(prompt, ai_helper, knowledge_base)
