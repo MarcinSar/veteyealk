@@ -216,11 +216,22 @@ Aby pomóc Ci w diagnostyce, potrzebuję numeru seryjnego Twojego urządzenia. P
         else:
             return "Przepraszam, wystąpił błąd podczas przetwarzania zgody. Spróbuj ponownie."
     elif message.lower() in ['nie', 'n', 'no']:
-        return """### Rozumiem Twoją decyzję. 
+        # Zakończ rozmowę i przekieruj do kontaktu telefonicznego lub mailowego
+        if set_state(ConversationState.END):
+            return """### Rozumiem Twoją decyzję.
 
-Niestety bez zgody na przetwarzanie danych osobowych nie mogę utworzyć zgłoszenia serwisowego w razie takiej potrzeby. 
+Niestety bez Twojej zgody na przetwarzanie danych osobowych nie możemy kontynuować rozmowy ani udzielić wsparcia technicznego poprzez tego asystenta.
 
-Mogę jednak spróbować pomóc Ci rozwiązać problem bez rejestrowania danych. Co chciałbyś wiedzieć o swoim urządzeniu?"""
+Jeśli nadal potrzebujesz pomocy z urządzeniem, prosimy o bezpośredni kontakt z naszym działem serwisu:
+
+**Telefon:** +48 444 444 444
+**E-mail:** serwis@veteye.pl
+
+Nasi specjaliści są dostępni od poniedziałku do piątku w godzinach 8:00-16:00.
+
+Dziękujemy za zrozumienie i życzymy miłego dnia!"""
+        else:
+            return "Przepraszam, wystąpił błąd podczas przetwarzania odpowiedzi. Spróbuj ponownie."
     else:
         # Sprawdź, czy użytkownik już wyraził zgodę RODO, ale wpisuje coś innego niż numer seryjny
         if hasattr(st.session_state.context, 'gdpr_consent') and st.session_state.context.gdpr_consent:
@@ -286,6 +297,18 @@ def handle_issue_analysis(message: str, ai_helper: AIHelper, knowledge_base: Kno
             # Jeśli pytanie nie jest związane z urządzeniami, zwróć odpowiednią odpowiedź
             logger.warning(f"Detected off-topic question: {message}")
             return topic_check.get("response", "Przepraszam, mogę odpowiadać tylko na pytania związane z urządzeniami Vet-Eye.")
+        
+        # Jeśli opis problemu jest bardzo krótki (mniej niż 5 słów), poproś o więcej szczegółów
+        words = [w for w in message.split() if len(w) > 1]  # Ignoruj jednoliterowe słowa
+        if len(words) < 3 and len(message) < 20:
+            return """Dziękuję za zgłoszenie problemu. Aby lepiej Ci pomóc, potrzebuję nieco więcej szczegółów.
+
+Czy mógłbyś opisać dokładniej, na czym polega problem z urządzeniem? Na przykład:
+- Jakie objawy zauważyłeś?
+- Kiedy problem się pojawił?
+- Czy występuje w konkretnych sytuacjach?
+
+Im więcej szczegółów podasz, tym lepiej będę mógł zdiagnozować problem."""
         
         # Get solutions from knowledge base
         solutions, _ = knowledge_base.find_solution(model, message)
