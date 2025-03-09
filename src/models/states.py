@@ -20,7 +20,7 @@ class ConversationState(Enum):
 
 # Mapa dozwolonych przejść między stanami
 VALID_STATE_TRANSITIONS = {
-    ConversationState.WELCOME: {ConversationState.DEVICE_VERIFICATION},
+    ConversationState.WELCOME: {ConversationState.DEVICE_VERIFICATION, ConversationState.END},
     ConversationState.GDPR: {ConversationState.DEVICE_VERIFICATION, ConversationState.END},
     ConversationState.DEVICE_VERIFICATION: {ConversationState.ISSUE_ANALYSIS, ConversationState.GDPR},
     ConversationState.ISSUE_ANALYSIS: {ConversationState.CHECK_RESOLUTION, ConversationState.ISSUE_REPORTED},

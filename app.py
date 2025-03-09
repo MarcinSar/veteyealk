@@ -216,9 +216,8 @@ Aby pomóc Ci w diagnostyce, potrzebuję numeru seryjnego Twojego urządzenia. P
         else:
             return "Przepraszam, wystąpił błąd podczas przetwarzania zgody. Spróbuj ponownie."
     elif message.lower() in ['nie', 'n', 'no']:
-        # Zakończ rozmowę i przekieruj do kontaktu telefonicznego lub mailowego
-        if set_state(ConversationState.END):
-            return """### Rozumiem Twoją decyzję.
+        # Zwróć komunikat o zakończeniu rozmowy bez zmiany stanu
+        return """### Rozumiem Twoją decyzję.
 
 Niestety bez Twojej zgody na przetwarzanie danych osobowych nie możemy kontynuować rozmowy ani udzielić wsparcia technicznego poprzez tego asystenta.
 
@@ -230,8 +229,6 @@ Jeśli nadal potrzebujesz pomocy z urządzeniem, prosimy o bezpośredni kontakt 
 Nasi specjaliści są dostępni od poniedziałku do piątku w godzinach 8:00-16:00.
 
 Dziękujemy za zrozumienie i życzymy miłego dnia!"""
-        else:
-            return "Przepraszam, wystąpił błąd podczas przetwarzania odpowiedzi. Spróbuj ponownie."
     else:
         # Sprawdź, czy użytkownik już wyraził zgodę RODO, ale wpisuje coś innego niż numer seryjny
         if hasattr(st.session_state.context, 'gdpr_consent') and st.session_state.context.gdpr_consent:
