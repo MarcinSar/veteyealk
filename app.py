@@ -275,19 +275,8 @@ Numer seryjny znajduje się na naklejce na spodzie lub z tyłu urządzenia."""
         # Zapisz urządzenie w kontekście
         st.session_state.context.verified_device = device
         
-        # Zapisz numer seryjny do tabeli Calendar w kolumnie dev_sn
-        if calendar_client:
-            try:
-                # Utwórz pusty rekord w tabeli Calendar z numerem seryjnym
-                record = {
-                    'dev_sn': serial_number
-                }
-                
-                # Użyj bezpośrednio obiektu Airtable z calendar_client
-                calendar_client.airtable.insert(record)
-                logger.info(f"Zapisano numer seryjny {serial_number} do tabeli Calendar")
-            except Exception as e:
-                logger.error(f"Błąd podczas zapisywania numeru seryjnego do tabeli Calendar: {str(e)}")
+        # Zapisz numer seryjny w kontekście do późniejszego wykorzystania
+        st.session_state.context.device_serial_number = serial_number
         
         set_state(ConversationState.ISSUE_ANALYSIS)
         return f"""### ✅ Zweryfikowano urządzenie:
@@ -739,7 +728,7 @@ def handle_confirmation(message: str, airtable_client: AirtableClient, calendar_
             device_model = device_info.split("Status")[0].strip() if "Status" in device_info else device_info
             
             # Pobierz numer seryjny i opis problemu
-            device_sn = st.session_state.context.verified_device.get('serial_number', '')
+            device_sn = st.session_state.context.device_serial_number if hasattr(st.session_state.context, 'device_serial_number') else ''
             issue_description = st.session_state.context.issue_description
             
             # Utwórz opis dla wizyty (dla kalendarza Google)
@@ -776,7 +765,8 @@ def handle_confirmation(message: str, airtable_client: AirtableClient, calendar_
                 'customer_address': customer_address,
                 'customer_phone': customer_phone,
                 'customer_email': customer_email,
-                'customer_name': customer_name  # Imię i nazwisko klienta
+                'customer_name': customer_name,  # Imię i nazwisko klienta
+                'dev_sn': device_sn  # Dodajemy numer seryjny urządzenia
             }
             
             # Utwórz nową instancję Airtable dla tabeli Calendar
