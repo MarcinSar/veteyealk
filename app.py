@@ -367,65 +367,89 @@ def handle_check_resolution(message: str) -> str:
             if st.session_state.context.attempts == 1:
                 # Wybierz pytania dostosowane do rodzaju problemu
                 if "zdjęcia" in issue_description or "obraz" in issue_description or "jakość obrazu" in issue_description:
-                    return ("Rozumiem, że problem z jakością obrazu nadal występuje. Spróbujmy bardziej szczegółowej diagnozy:\n\n"
+                    response = ("Rozumiem, że problem z jakością obrazu nadal występuje. Spróbujmy bardziej szczegółowej diagnozy:\n\n"
                            "1. Kiedy ostatnio czyszczona była głowica urządzenia?\n"
                            "2. Czy problem występuje podczas wszystkich badań, czy tylko w określonych warunkach?\n"
                            "3. Czy próbowano różnych ustawień jasności, kontrastu i ostrości?\n"
                            "4. Czy problem pojawił się nagle, czy jakość pogarszała się stopniowo?\n\n"
                            "Odpowiedzi na te pytania pomogą mi lepiej zrozumieć problem.")
+                    # Zapisz ostatnie zaproponowane rozwiązanie
+                    st.session_state.context.last_solution = "diagnostic_questions_image"
+                    return response
                 elif "restart" in issue_description or "wyłącza" in issue_description or "zawiesza" in issue_description:
-                    return ("Rozumiem, że problem z restartowaniem się nadal występuje. Spróbujmy bardziej szczegółowej diagnozy:\n\n"
+                    response = ("Rozumiem, że problem z restartowaniem się nadal występuje. Spróbujmy bardziej szczegółowej diagnozy:\n\n"
                            "1. Czy urządzenie restartuje się w określonych momentach, np. podczas wykonywania konkretnych operacji?\n"
                            "2. Czy na ekranie pojawiają się jakiekolwiek komunikaty błędów przed wyłączeniem?\n"
                            "3. Czy problem nasila się, gdy urządzenie jest używane przez dłuższy czas?\n"
                            "4. Czy próbowano podłączyć urządzenie do innego źródła zasilania?\n\n"
                            "Te informacje pomogą mi lepiej zrozumieć charakter problemu.")
+                    # Zapisz ostatnie zaproponowane rozwiązanie
+                    st.session_state.context.last_solution = "diagnostic_questions_restart"
+                    return response
                 elif "gorące" in issue_description or "temperatura" in issue_description or "przegrzewa" in issue_description:
-                    return ("Rozumiem, że problem z przegrzewaniem się nadal występuje. Spróbujmy bardziej szczegółowej diagnozy:\n\n"
+                    response = ("Rozumiem, że problem z przegrzewaniem się nadal występuje. Spróbujmy bardziej szczegółowej diagnozy:\n\n"
                            "1. Jak długo urządzenie pozostaje włączone, zanim staje się gorące?\n"
                            "2. Czy urządzenie stoi na płaskiej powierzchni z dobrą wentylacją?\n"
                            "3. Czy zauważyłeś jakiekolwiek zmiany w wydajności urządzenia w trakcie pracy?\n"
                            "4. Czy słychać pracę wentylatorów wewnątrz urządzenia?\n\n"
                            "Te szczegóły pomogą mi lepiej zrozumieć problem z przegrzewaniem.")
+                    # Zapisz ostatnie zaproponowane rozwiązanie
+                    st.session_state.context.last_solution = "diagnostic_questions_heat"
+                    return response
                 elif "nie włącza" in issue_description or "nie uruchamia" in issue_description:
-                    return ("Rozumiem, że urządzenie nadal nie chce się włączyć. Spróbujmy bardziej szczegółowej diagnozy:\n\n"
+                    response = ("Rozumiem, że urządzenie nadal nie chce się włączyć. Spróbujmy bardziej szczegółowej diagnozy:\n\n"
                            "1. Czy na urządzeniu widać jakiekolwiek oznaki aktywności (diody, dźwięki)?\n"
                            "2. Czy próbowano podłączyć urządzenie do innego gniazdka?\n"
                            "3. Czy kabel zasilający jest w dobrym stanie i dobrze podłączony?\n"
                            "4. Czy wystąpiły jakiekolwiek incydenty (upadek, zalanie) przed problemem?\n\n"
                            "Te informacje będą kluczowe w dalszej diagnostyce.")
+                    # Zapisz ostatnie zaproponowane rozwiązanie
+                    st.session_state.context.last_solution = "diagnostic_questions_power"
+                    return response
                 else:
                     # Ogólne pytania dla innych problemów
-                    return ("Rozumiem, że pierwsze rozwiązanie nie pomogło. Spróbujmy bardziej szczegółowej diagnozy:\n\n"
+                    response = ("Rozumiem, że pierwsze rozwiązanie nie pomogło. Spróbujmy bardziej szczegółowej diagnozy:\n\n"
                            "1. Kiedy dokładnie pojawił się problem i jak często występuje?\n"
                            "2. Czy problem występuje w określonych warunkach lub podczas wykonywania konkretnych zadań?\n"
                            "3. Czy przed wystąpieniem problemu urządzenie działało normalnie, czy zauważyłeś jakieś nietypowe zachowania?\n"
                            "4. Czy wykonałeś już jakieś próby naprawy na własną rękę?\n\n"
                            "Te dodatkowe informacje pomogą mi lepiej zrozumieć charakter problemu.")
+                    # Zapisz ostatnie zaproponowane rozwiązanie
+                    st.session_state.context.last_solution = "diagnostic_questions_general"
+                    return response
             else:
                 # Druga próba - propozycje konkretnych rozwiązań w zależności od rodzaju problemu
                 if "zdjęcia" in issue_description or "obraz" in issue_description or "jakość obrazu" in issue_description:
-                    return ("Dziękuję za dodatkowe informacje. Spróbujmy jeszcze jednego rozwiązania dla poprawy jakości obrazu:\n\n"
+                    response = ("Dziękuję za dodatkowe informacje. Spróbujmy jeszcze jednego rozwiązania dla poprawy jakości obrazu:\n\n"
                            "1. Wykonaj reset do ustawień fabrycznych poprzez menu Ustawienia > System > Resetowanie urządzenia.\n"
                            "2. Dokładnie wyczyść głowicę używając specjalnego preparatu do czyszczenia sond (nie używaj alkoholu ani środków ściernych).\n"
                            "3. Sprawdź połączenia kablowe między głowicą a jednostką główną.\n"
                            "4. Uruchom urządzenie ponownie i wykonaj test kalibracyjny dostępny w menu Diagnostyka.\n\n"
                            "Czy po wykonaniu tych czynności zauważyłeś poprawę jakości obrazu?")
+                    # Zapisz ostatnie zaproponowane rozwiązanie
+                    st.session_state.context.last_solution = "solution_image_reset"
+                    return response
                 elif "restart" in issue_description or "wyłącza" in issue_description or "zawiesza" in issue_description:
-                    return ("Dziękuję za dodatkowe informacje. Spróbujmy bardziej zaawansowanego rozwiązania problemu z restartami:\n\n"
+                    response = ("Dziękuję za dodatkowe informacje. Spróbujmy bardziej zaawansowanego rozwiązania problemu z restartami:\n\n"
                            "1. Zaktualizuj oprogramowanie urządzenia do najnowszej wersji (dostępne na stronie producenta).\n"
                            "2. Wykonaj przywracanie ustawień fabrycznych z menu Ustawienia > System > Reset fabryczny.\n"
                            "3. Sprawdź, czy problem występuje na zasilaniu bateryjnym, jeśli urządzenie posiada baterię.\n"
                            "4. Sprawdź, czy urządzenie nie jest podatne na zakłócenia elektromagnetyczne - oddal inne urządzenia elektroniczne.\n\n"
                            "Czy którekolwiek z tych rozwiązań przyniosło poprawę?")
+                    # Zapisz ostatnie zaproponowane rozwiązanie
+                    st.session_state.context.last_solution = "solution_restart_update"
+                    return response
                 else:
                     # Ogólne rozwiązania dla pozostałych problemów
-                    return ("Dziękuję za dodatkowe informacje. Spróbujmy jeszcze jednego rozwiązania:\n\n"
+                    response = ("Dziękuję za dodatkowe informacje. Spróbujmy jeszcze jednego rozwiązania:\n\n"
                            "1. Odłącz urządzenie od zasilania na co najmniej 5 minut.\n"
                            "2. Sprawdź, czy złącza i przewody są dobrze podłączone i nie są uszkodzone.\n"
                            "3. Jeśli urządzenie ma przycisk reset (często mały otwór, który można nacisnąć spinaczem), użyj go.\n"
                            "4. Podłącz urządzenie ponownie i spróbuj je włączyć.\n\n"
                            "Czy po wykonaniu tych kroków zauważyłeś jakąkolwiek poprawę?")
+                    # Zapisz ostatnie zaproponowane rozwiązanie
+                    st.session_state.context.last_solution = "solution_general_reset"
+                    return response
         else:
             # Po wyczerpaniu prób diagnostycznych, zaproponuj wizytę serwisową
             set_state(ConversationState.ISSUE_REPORTED)
@@ -438,28 +462,68 @@ def handle_check_resolution(message: str) -> str:
         # Zapisz informacje od użytkownika w kontekście
         st.session_state.context.additional_info = st.session_state.context.additional_info + "\n" + message if hasattr(st.session_state.context, 'additional_info') else message
         
+        # Sprawdź, czy już zaproponowano rozwiązanie po odpowiedzi diagnostycznej
+        last_solution = st.session_state.context.last_solution if hasattr(st.session_state.context, 'last_solution') else ""
+        
         # Zamiast pytać ponownie o skuteczność, zaproponuj nowe rozwiązanie
         issue_description = st.session_state.context.issue_description.lower() if hasattr(st.session_state.context, 'issue_description') else ""
         
+        # Sprawdź, czy już zaproponowano rozwiązanie dla jakości obrazu
         if "zdjęcia" in issue_description or "obraz" in issue_description or "jakość obrazu" in issue_description:
-            return ("Dziękuję za dodatkowe informacje. Na podstawie dostarczonych szczegółów, proponuję następujące rozwiązanie problemu z jakością obrazu:\n\n"
-                   "1. Wykonaj pełną kalibrację urządzenia z menu serwisowego (dostęp: przytrzymaj przycisk zasilania + przycisk funkcyjny F2 podczas włączania).\n"
-                   "2. Sprawdź, czy wszystkie filtry obrazu są prawidłowo skonfigurowane.\n"
-                   "3. Spróbuj przełączyć urządzenie w tryb diagnostyczny, który oferuje lepszą jakość obrazu do celów testowych.\n\n"
-                   "Czy udało Ci się wykonać te czynności i czy przyniosły one poprawę?")
+            # Jeśli już zaproponowano rozwiązanie dla jakości obrazu, zaproponuj inne
+            if last_solution == "solution_image_advanced":
+                # Jeśli już zaproponowano zaawansowane rozwiązanie, przejdź do serwisu
+                st.session_state.context.attempts = 3  # Ustawienie liczby prób na 3, aby przejść do serwisu
+                set_state(ConversationState.ISSUE_REPORTED)
+                return ("Bardzo mi przykro, że nie udało się rozwiązać problemu z jakością obrazu zdalnie. W takim przypadku najlepszym rozwiązaniem będzie wizyta serwisowa. "
+                       "Serwisant będzie mógł bezpośrednio zbadać urządzenie i zdiagnozować przyczynę problemu. Muszę poinformować, że wizyta serwisowa może okazać się płatna nawet w przypadku gdy urządzenie jest objęte gwarancją. Wszystko zależy od przyczyny problemu.\n\n"
+                       "Czy chciałbyś umówić wizytę serwisową? (tak/nie)")
+            else:
+                response = ("Dziękuję za dodatkowe informacje. Na podstawie dostarczonych szczegółów, proponuję następujące rozwiązanie problemu z jakością obrazu:\n\n"
+                       "1. Wykonaj pełną kalibrację urządzenia z menu serwisowego (dostęp: przytrzymaj przycisk zasilania + przycisk funkcyjny F2 podczas włączania).\n"
+                       "2. Sprawdź, czy wszystkie filtry obrazu są prawidłowo skonfigurowane.\n"
+                       "3. Spróbuj przełączyć urządzenie w tryb diagnostyczny, który oferuje lepszą jakość obrazu do celów testowych.\n\n"
+                       "Czy udało Ci się wykonać te czynności i czy przyniosły one poprawę?")
+                # Zapisz ostatnie zaproponowane rozwiązanie
+                st.session_state.context.last_solution = "solution_image_advanced"
+                return response
         elif "restart" in issue_description or "wyłącza" in issue_description or "zawiesza" in issue_description:
-            return ("Dziękuję za dodatkowe informacje. Na podstawie dostarczonych szczegółów, proponuję następujące rozwiązanie problemu z restartami:\n\n"
-                   "1. Wykonaj diagnostykę sprzętową z menu rozruchowego (dostęp przez przytrzymanie przycisku funkcyjnego podczas włączania).\n"
-                   "2. Sprawdź logi systemowe, które mogą wskazywać na przyczynę problemów.\n"
-                   "3. Jeśli możliwe, podłącz urządzenie do zasilania przez stabilizator napięcia, aby wyeliminować problemy z zasilaniem.\n\n"
-                   "Czy udało Ci się wykonać te czynności i czy przyniosły one poprawę?")
+            # Jeśli już zaproponowano rozwiązanie dla restartów, zaproponuj inne
+            if last_solution == "solution_restart_advanced":
+                # Jeśli już zaproponowano zaawansowane rozwiązanie, przejdź do serwisu
+                st.session_state.context.attempts = 3  # Ustawienie liczby prób na 3, aby przejść do serwisu
+                set_state(ConversationState.ISSUE_REPORTED)
+                return ("Bardzo mi przykro, że nie udało się rozwiązać problemu z restartami zdalnie. W takim przypadku najlepszym rozwiązaniem będzie wizyta serwisowa. "
+                       "Serwisant będzie mógł bezpośrednio zbadać urządzenie i zdiagnozować przyczynę problemu. Muszę poinformować, że wizyta serwisowa może okazać się płatna nawet w przypadku gdy urządzenie jest objęte gwarancją. Wszystko zależy od przyczyny problemu.\n\n"
+                       "Czy chciałbyś umówić wizytę serwisową? (tak/nie)")
+            else:
+                response = ("Dziękuję za dodatkowe informacje. Na podstawie dostarczonych szczegółów, proponuję następujące rozwiązanie problemu z restartami:\n\n"
+                       "1. Wykonaj diagnostykę sprzętową z menu rozruchowego (dostęp przez przytrzymanie przycisku funkcyjnego podczas włączania).\n"
+                       "2. Sprawdź logi systemowe, które mogą wskazywać na przyczynę problemów.\n"
+                       "3. Jeśli możliwe, podłącz urządzenie do zasilania przez stabilizator napięcia, aby wyeliminować problemy z zasilaniem.\n\n"
+                       "Czy udało Ci się wykonać te czynności i czy przyniosły one poprawę?")
+                # Zapisz ostatnie zaproponowane rozwiązanie
+                st.session_state.context.last_solution = "solution_restart_advanced"
+                return response
         else:
             # Ogólne rozwiązania dla pozostałych problemów
-            return ("Dziękuję za dodatkowe informacje. Na ich podstawie proponuję następujące rozwiązanie:\n\n"
-                   "1. Wykonaj pełną diagnostykę urządzenia z menu serwisowego.\n"
-                   "2. Sprawdź, czy są dostępne aktualizacje oprogramowania dla Twojego modelu urządzenia.\n"
-                   "3. Wykonaj procedurę czyszczenia pamięci podręcznej urządzenia (cache).\n\n"
-                   "Czy udało Ci się wykonać te czynności i czy przyniosły one poprawę?")
+            # Jeśli już zaproponowano ogólne rozwiązanie, zaproponuj inne
+            if last_solution == "solution_general_advanced":
+                # Jeśli już zaproponowano zaawansowane rozwiązanie, przejdź do serwisu
+                st.session_state.context.attempts = 3  # Ustawienie liczby prób na 3, aby przejść do serwisu
+                set_state(ConversationState.ISSUE_REPORTED)
+                return ("Bardzo mi przykro, że nie udało się rozwiązać problemu zdalnie. W takim przypadku najlepszym rozwiązaniem będzie wizyta serwisowa. "
+                       "Serwisant będzie mógł bezpośrednio zbadać urządzenie i zdiagnozować przyczynę problemu. Muszę poinformować, że wizyta serwisowa może okazać się płatna nawet w przypadku gdy urządzenie jest objęte gwarancją. Wszystko zależy od przyczyny problemu.\n\n"
+                       "Czy chciałbyś umówić wizytę serwisową? (tak/nie)")
+            else:
+                response = ("Dziękuję za dodatkowe informacje. Na ich podstawie proponuję następujące rozwiązanie:\n\n"
+                       "1. Wykonaj pełną diagnostykę urządzenia z menu serwisowego.\n"
+                       "2. Sprawdź, czy są dostępne aktualizacje oprogramowania dla Twojego modelu urządzenia.\n"
+                       "3. Wykonaj procedurę czyszczenia pamięci podręcznej urządzenia (cache).\n\n"
+                       "Czy udało Ci się wykonać te czynności i czy przyniosły one poprawę?")
+                # Zapisz ostatnie zaproponowane rozwiązanie
+                st.session_state.context.last_solution = "solution_general_advanced"
+                return response
 
 def handle_issue_reported(message: str) -> str:
     """Obsługuje zgłoszenie problemu"""
